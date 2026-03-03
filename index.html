@@ -64,7 +64,8 @@ text-align:center; margin-bottom:6px; letter-spacing:0.02em;
 /* ─────────────────────────────────────────
 APP SHELL
 ───────────────────────────────────────── */
-#app { display:none; min-height:100vh; }
+#app { display:none; flex-direction:column; min-height:100vh; }
+#app.visible { display:flex; flex-direction:column; }
 
 .topbar {
 background:var(–surface); color:var(–ink);
@@ -79,7 +80,7 @@ border-bottom:1px solid var(–line);
 .icon-btn:hover { color:var(–ink); }
 
 /* ─── Body wrapper: column on phone, row on tablet ─── */
-.app-body { display:flex; flex-direction:column; min-height:calc(100vh - 56px); }
+.app-body { display:flex; flex-direction:column; width:100%; min-height:calc(100vh - 56px); }
 
 /* ─────────────────────────────────────────
 BOTTOM NAV  (phone only, <768px)
@@ -98,7 +99,7 @@ letter-spacing:0.06em; text-transform:uppercase; min-height:54px;
 }
 .nav-item.active { color:var(–ink); }
 .nav-item.active .nav-icon svg { stroke-width:2; }
-.nav-item .nav-icon { display:flex; align-items:center; }
+.nav-item .nav-icon { display:flex; align-items:center; justify-content:center; }
 
 /* side nav hidden on phone */
 .side-nav { display:none; }
@@ -106,7 +107,7 @@ letter-spacing:0.06em; text-transform:uppercase; min-height:54px;
 /* ─────────────────────────────────────────
 PAGES
 ───────────────────────────────────────── */
-.pages-wrap { flex:1; min-width:0; overflow-x:hidden; }
+.pages-wrap { flex:1; min-width:0; overflow-x:hidden; width:100%; }
 .page { display:none; padding:22px 18px 96px; }
 .page.active { display:block; }
 
@@ -134,7 +135,8 @@ Side nav appears, content wider
 
 /* kill bottom nav, show side nav */
 .bottom-nav { display:none; }
-.app-body { flex-direction:row; }
+#app { flex-direction:column; }
+.app-body { flex-direction:row; align-items:stretch; }
 
 .side-nav {
 display:flex; flex-direction:column;
@@ -150,7 +152,7 @@ flex-direction:row; justify-content:flex-start;
 gap:13px; padding:14px 28px; font-size:11px;
 letter-spacing:0.07em; min-height:unset; color:var(–ink-3);
 }
-.side-nav .nav-item .nav-icon { width:20px; height:20px; flex-shrink:0; }
+.side-nav .nav-item .nav-icon { width:20px; height:20px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .side-nav .nav-item.active { color:var(–ink); background:var(–mist); border-left:2px solid var(–accent); padding-left:26px; }
 .side-nav .nav-item:hover { color:var(–ink); }
 
@@ -422,11 +424,11 @@ color: var(–ink-2);
 
   <div class="app-body">
     <nav class="side-nav">
-    <button class="nav-item active" onclick="showPage('trips')" id="side-nav-trips"><span class="nav-icon" style="width:22px;height:22px;display:block;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span><span>Reizen</span></button>
-    <button class="nav-item" onclick="openActivePack()" id="side-nav-pack"><span class="nav-icon" style="width:22px;height:22px;display:block;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></span><span>Paklijst</span></button>
-    <button class="nav-item" onclick="showPage('essentials')" id="side-nav-essentials"><span class="nav-icon" style="width:22px;height:22px;display:block;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span><span>Items</span></button>
-    <button class="nav-item" onclick="showPage('household')" id="side-nav-household"><span class="nav-icon" style="width:22px;height:22px;display:block;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span><span>Huishouden</span></button>
-    <button class="nav-item" onclick="showPage('settings')" id="side-nav-settings"><span class="nav-icon" style="width:22px;height:22px;display:block;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span><span>Instellingen</span></button>
+    <button class="nav-item active" onclick="showPage('trips')" id="side-nav-trips"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span><span>Reizen</span></button>
+    <button class="nav-item" onclick="openActivePack()" id="side-nav-pack"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></span><span>Paklijst</span></button>
+    <button class="nav-item" onclick="showPage('essentials')" id="side-nav-essentials"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span><span>Items</span></button>
+    <button class="nav-item" onclick="showPage('household')" id="side-nav-household"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span><span>Huishouden</span></button>
+    <button class="nav-item" onclick="showPage('settings')" id="side-nav-settings"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span><span>Instellingen</span></button>
     </nav>
     <div class="pages-wrap">
   <div id="page-trips" class="page active">
@@ -531,11 +533,11 @@ color: var(–ink-2);
   </div><!-- /app-body -->
 
   <nav class="bottom-nav">
-    <button class="nav-item active" onclick="showPage('trips')" id="nav-trips"><span class="nav-icon" style="width:22px;height:22px;display:block;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span><span>Reizen</span></button>
-    <button class="nav-item" onclick="openActivePack()" id="nav-pack"><span class="nav-icon" style="width:22px;height:22px;display:block;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></span><span>Paklijst</span></button>
-    <button class="nav-item" onclick="showPage('essentials')" id="nav-essentials"><span class="nav-icon" style="width:22px;height:22px;display:block;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span><span>Items</span></button>
-    <button class="nav-item" onclick="showPage('household')" id="nav-household"><span class="nav-icon" style="width:22px;height:22px;display:block;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span><span>Huishouden</span></button>
-    <button class="nav-item" onclick="showPage('settings')" id="nav-settings"><span class="nav-icon" style="width:22px;height:22px;display:block;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span><span>Instellingen</span></button>
+    <button class="nav-item active" onclick="showPage('trips')" id="nav-trips"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span><span>Reizen</span></button>
+    <button class="nav-item" onclick="openActivePack()" id="nav-pack"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></span><span>Paklijst</span></button>
+    <button class="nav-item" onclick="showPage('essentials')" id="nav-essentials"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span><span>Items</span></button>
+    <button class="nav-item" onclick="showPage('household')" id="nav-household"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span><span>Huishouden</span></button>
+    <button class="nav-item" onclick="showPage('settings')" id="nav-settings"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span><span>Instellingen</span></button>
   </nav>
 </div>
 
@@ -1143,7 +1145,7 @@ async function doForgotPassword() {
 
 function showApp() {
   document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
+  document.getElementById('app').style.display = 'flex';
   showPage('trips');
   renderTrips();
   renderMembers();

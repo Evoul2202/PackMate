@@ -172,8 +172,8 @@ height: calc(100vh - 60px);
 overflow-y: auto;
 }
 .side-nav .nav-item {
-display: flex;
-flex-direction: row;
+display: flex !important;
+flex-direction: row !important;
 justify-content: flex-start;
 align-items: center;
 gap: 12px;
@@ -182,7 +182,7 @@ font-size: 11px;
 letter-spacing: 0.07em;
 text-transform: uppercase;
 min-height: unset;
-color: var(–ink-3);
+color: #6A6862;
 width: 100%;
 border: none;
 background: none;
@@ -191,15 +191,14 @@ transition: color 0.15s, background 0.15s;
 font-family: var(–sans);
 font-weight: 400;
 }
-.side-nav .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
-.side-nav .nav-item span:not(.nav-icon) { display: block; }
+.side-nav .nav-item span { display: inline !important; }
 .side-nav .nav-item.active {
-color: var(–ink);
-background: var(–mist);
-border-left: 2px solid var(–accent);
-padding-left: 22px;
+color: #1C1B18;
+background: #F2F1EF;
+border-left: 3px solid #4A6670;
+padding-left: 21px;
 }
-.side-nav .nav-item:hover { color: var(–ink); background: var(–mist); }
+.side-nav .nav-item:hover { color: #1C1B18; background: #F2F1EF; }
 
 .page { padding: 32px 36px 60px; }
 .page-header { margin-bottom: 28px; padding-bottom: 18px; }
@@ -457,21 +456,36 @@ color: var(–ink-2);
 
 <!-- APP -->
 
-<div id="app">
-  <div class="topbar">
-    <div class="topbar-logo">Pack<span>Mate</span></div>
-    <button class="icon-btn" onclick="doLogout()" title="Uitloggen" style="color:var(--ink-2);display:flex;align-items:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+<div id="app" style="display:none;flex-direction:column;min-height:100vh">
+  <div class="topbar" style="display:flex;align-items:center;gap:12px;padding:0 20px;height:56px;background:#FDFCFB;border-bottom:1px solid #E4E2DE;position:sticky;top:0;z-index:100;flex-shrink:0">
+    <div class="topbar-logo" style="flex:1;font-family:'Libre Baskerville',serif;font-size:1.45rem;color:#1C1B18;letter-spacing:0.02em">Pack<span style="color:#4A6670">Mate</span></div>
+    <button onclick="doLogout()" title="Uitloggen" style="background:none;border:none;cursor:pointer;color:#6A6862;display:flex;align-items:center;padding:8px;min-width:44px;min-height:44px;justify-content:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
   </div>
 
-  <div class="app-body">
-    <nav class="side-nav">
-    <button class="nav-item active" onclick="showPage('trips')" id="side-nav-trips"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span><span>Reizen</span></button>
-    <button class="nav-item" onclick="openActivePack()" id="side-nav-pack"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></span><span>Paklijst</span></button>
-    <button class="nav-item" onclick="showPage('essentials')" id="side-nav-essentials"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span><span>Items</span></button>
-    <button class="nav-item" onclick="showPage('household')" id="side-nav-household"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span><span>Huishouden</span></button>
-    <button class="nav-item" onclick="showPage('settings')" id="side-nav-settings"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span><span>Instellingen</span></button>
+  <div class="app-body" style="display:flex;flex-direction:row;flex:1;min-height:0">
+    <nav id="side-nav-el" class="side-nav" style="display:none;flex-direction:column;width:200px;flex-shrink:0;background:#FDFCFB;border-right:1px solid #E4E2DE;padding:20px 0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto">
+    <button class="nav-item active" onclick="showPage('trips')" id="side-nav-trips">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;flex-shrink:0"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span>Reizen</span>
+    </button>
+    <button class="nav-item" onclick="openActivePack()" id="side-nav-pack">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;flex-shrink:0"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span>Paklijst</span>
+    </button>
+    <button class="nav-item" onclick="showPage('essentials')" id="side-nav-essentials">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;flex-shrink:0"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      <span>Items</span>
+    </button>
+    <button class="nav-item" onclick="showPage('household')" id="side-nav-household">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;flex-shrink:0"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      <span>Huishouden</span>
+    </button>
+    <button class="nav-item" onclick="showPage('settings')" id="side-nav-settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;flex-shrink:0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      <span>Instellingen</span>
+    </button>
     </nav>
-    <div class="pages-wrap">
+    <div class="pages-wrap" style="flex:1;min-width:0;overflow-x:hidden;overflow-y:auto">
   <div id="page-trips" class="page active">
     <div class="page-header">
       <h2 class="page-title">Mijn Reizen</h2>
@@ -1138,6 +1152,20 @@ async function doRegister() {
   toast('Welkom bij PackMate!');
 }
 
+function applyResponsiveLayout() {
+  var sideNav = document.getElementById('side-nav-el');
+  var bottomNav = document.querySelector('.bottom-nav');
+  if (!sideNav) return;
+  if (window.innerWidth >= 768) {
+    sideNav.style.display = 'flex';
+    if (bottomNav) bottomNav.style.display = 'none';
+  } else {
+    sideNav.style.display = 'none';
+    if (bottomNav) bottomNav.style.display = 'flex';
+  }
+}
+window.addEventListener('resize', applyResponsiveLayout);
+
 function demoMode() {
   currentUser = { id: 'demo', email: 'demo@packmate.nl' };
   loadDemoData();
@@ -1187,6 +1215,7 @@ async function doForgotPassword() {
 function showApp() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
+  applyResponsiveLayout();
   showPage('trips');
   renderTrips();
   renderMembers();

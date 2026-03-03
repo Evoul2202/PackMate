@@ -44,18 +44,22 @@
 /* AUTH */
 #auth-screen {
 min-height:100vh; display:flex; align-items:center; justify-content:center;
-background:#16150F; padding:24px;
+background:var(–canvas); padding:24px;
 }
 .auth-card {
-background:var(–surface); padding:44px 36px; width:100%; max-width:380px;
-border-top:2px solid var(–line-2);
+background:var(–surface); padding:44px 36px; width:100%; max-width:400px;
+border:1px solid var(–line-2); border-top:3px solid var(–accent);
 }
 .auth-logo {
-font-family:var(–serif); font-size:2.2rem; font-weight:400; color:var(–ink);
+font-family:var(–serif); font-size:2.4rem; font-weight:400; color:var(–ink);
 text-align:center; margin-bottom:6px; letter-spacing:0.02em;
 }
-.auth-logo span { color:var(–gold); }
-.auth-tagline { text-align:center; color:var(–ink-3); margin-bottom:32px; font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:400; }
+.auth-logo span { color:var(–accent); }
+.auth-tagline { text-align:center; color:var(–ink-2); margin-bottom:32px; font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:400; }
+.auth-divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(–ink-3); font-size:12px; }
+.auth-divider::before, .auth-divider::after { content:’’; flex:1; height:1px; background:var(–line-2); }
+.auth-divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(–ink-3); font-size:12px; }
+.auth-divider::before, .auth-divider::after { content:’’; flex:1; height:1px; background:var(–line-2); }
 
 /* ─────────────────────────────────────────
 APP SHELL
@@ -352,20 +356,54 @@ color: var(–ink-2);
     <div class="auth-tagline">Slimme paklijsten voor iedereen</div>
 
 ```
+<!-- Login -->
 <div id="auth-login">
-  <div class="form-group"><label class="form-label">E-mailadres</label><input type="email" id="auth-email" placeholder="jij@voorbeeld.nl"></div>
-  <div class="form-group"><label class="form-label">Wachtwoord</label><input type="password" id="auth-password" placeholder="••••••••"></div>
-  <button class="btn btn-primary btn-block" onclick="doLogin()"><span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg></span> Inloggen</button>
-  <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--ink-2)">Nog geen account? <a href="#" onclick="showRegister()" style="color:var(--ink);font-weight:600">Registreer</a></div>
+  <div class="form-group">
+    <label class="form-label">E-mailadres</label>
+    <input type="email" id="auth-email" placeholder="jij@voorbeeld.nl" autocomplete="email">
+  </div>
+  <div class="form-group">
+    <label class="form-label">Wachtwoord</label>
+    <input type="password" id="auth-password" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" autocomplete="current-password">
+  </div>
+  <div style="text-align:right;margin-top:-8px;margin-bottom:16px">
+    <a href="#" onclick="showForgotPassword()" style="font-size:12.5px;color:var(--ink-2);">Wachtwoord vergeten?</a>
+  </div>
+  <button class="btn btn-primary btn-block" onclick="doLogin()">Inloggen</button>
+  <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
+    Nog geen account? <a href="#" onclick="showRegister()" style="color:var(--accent);font-weight:600">Registreer gratis</a>
+  </div>
+  <div class="auth-divider">of</div>
+  <button class="btn btn-ghost btn-block btn-sm" onclick="demoMode()">Probeer demo (geen account)</button>
 </div>
+
+<!-- Register -->
 <div id="auth-register" style="display:none">
-  <div class="form-group"><label class="form-label">E-mailadres</label><input type="email" id="reg-email" placeholder="jij@voorbeeld.nl"></div>
-  <div class="form-group"><label class="form-label">Wachtwoord</label><input type="password" id="reg-password" placeholder="Minimaal 6 tekens"></div>
-  <button class="btn btn-primary btn-block" onclick="doRegister()"><span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></span> Account aanmaken</button>
-  <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--ink-2)">Al een account? <a href="#" onclick="showLogin()" style="color:var(--ink);font-weight:600">Inloggen</a></div>
+  <div class="form-group">
+    <label class="form-label">E-mailadres</label>
+    <input type="email" id="reg-email" placeholder="jij@voorbeeld.nl" autocomplete="email">
+  </div>
+  <div class="form-group">
+    <label class="form-label">Wachtwoord</label>
+    <input type="password" id="reg-password" placeholder="Minimaal 6 tekens" autocomplete="new-password">
+  </div>
+  <button class="btn btn-primary btn-block" onclick="doRegister()">Account aanmaken</button>
+  <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
+    Al een account? <a href="#" onclick="showLogin()" style="color:var(--accent);font-weight:600">Inloggen</a>
+  </div>
 </div>
-<div style="margin-top:20px;text-align:center">
-  <button class="btn btn-ghost btn-sm" onclick="demoMode()"><span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></span> Demo modus (geen account)</button>
+
+<!-- Forgot password -->
+<div id="auth-forgot" style="display:none">
+  <div style="font-size:14px;color:var(--ink-2);margin-bottom:16px">Vul je e-mailadres in en we sturen je een resetlink.</div>
+  <div class="form-group">
+    <label class="form-label">E-mailadres</label>
+    <input type="email" id="forgot-email" placeholder="jij@voorbeeld.nl" autocomplete="email">
+  </div>
+  <button class="btn btn-primary btn-block" onclick="doForgotPassword()">Resetlink versturen</button>
+  <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
+    <a href="#" onclick="showLogin()" style="color:var(--accent);font-weight:600">Terug naar inloggen</a>
+  </div>
 </div>
 ```
 
@@ -377,7 +415,7 @@ color: var(–ink-2);
 <div id="app">
   <div class="topbar">
     <div class="topbar-logo">Pack<span>Mate</span></div>
-    <button class="icon-btn" onclick="doLogout()">↩</button>
+    <button class="icon-btn" onclick="doLogout()" title="Uitloggen" style="color:var(--ink-2);display:flex;align-items:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
   </div>
 
   <div class="app-body">
@@ -458,31 +496,28 @@ color: var(–ink-2);
 
   <div id="page-settings" class="page">
     <div class="page-header"><h2 class="page-title">Instellingen</h2></div>
-    <div class="card">
-      <div class="settings-title">Claude AI</div>
-      <div id="claude-key-status" style="display:none;margin-bottom:12px;padding:10px 12px;border-radius:var(--radius-sm);font-size:13px;font-weight:600"></div>
-      <div class="form-group">
-        <label class="form-label">Claude API Key</label>
-        <div style="display:flex;gap:8px">
-          <input type="password" id="setting-claude-key" placeholder="sk-ant-..." style="flex:1" oninput="onClaudeKeyInput()">
-          <button class="btn btn-primary btn-sm" onclick="saveClaudeKey()" id="btn-save-claude-key" style="white-space:nowrap"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span> Opslaan</button>
-        </div>
-        <div style="font-size:12px;color:var(--ink-2);margin-top:6px">Je sleutel wordt lokaal bewaard en nooit gedeeld.</div>
-      </div>
-      <button class="btn btn-ghost btn-sm" onclick="forgetClaudeKey()" id="btn-forget-claude-key" style="display:none;margin-top:4px"><span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6m4-6v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></span> Key vergeten</button>
-    </div>
 
 ```
 <div class="card">
-  <div class="settings-title">Excel importeren</div>
-  <div class="drop-area" onclick="document.getElementById('import-file').click()" ondragover="event.preventDefault()" ondrop="handleFileDrop(event)">
-    <div class="drop-area-icon">📂</div>
-    <div style="font-weight:600">Klik of sleep een bestand</div>
-    <div style="font-size:13px;margin-top:4px">.xlsx / .xls / .csv</div>
-    <input type="file" id="import-file" accept=".xlsx,.xls,.csv" style="display:none" onchange="importFile(this)">
+  <div class="settings-title">Account</div>
+  <div id="account-info" style="margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <div class="avatar avatar-ocean" id="account-avatar" style="width:44px;height:44px;font-size:1.1rem;flex-shrink:0"></div>
+      <div>
+        <div style="font-weight:600;font-size:15px" id="account-email-display"></div>
+        <div style="font-size:12px;color:var(--ink-2)" id="account-type-display"></div>
+      </div>
+    </div>
   </div>
+  <button class="btn btn-ghost btn-block" style="margin-bottom:8px" onclick="openChangePassword()">
+    <span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+    Wachtwoord wijzigen
+  </button>
+  <button class="btn btn-ghost btn-block" onclick="doLogout()">
+    <span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+    Uitloggen
+  </button>
 </div>
-<div class="card"><div class="settings-title">Account</div><button class="btn btn-ghost btn-block" onclick="doLogout()"><span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span> Uitloggen</button></div>
 ```
 
   </div>
@@ -554,16 +589,18 @@ color: var(–ink-2);
 
 <div class="modal-overlay" id="modal-add-dog">
   <div class="modal">
-    <div class="modal-header"><div class="modal-title">Hond toevoegen</div><button class="close-btn" onclick="closeModal('modal-add-dog')" style="display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-header"><div class="modal-title" id="dog-modal-title">Hond toevoegen</div><button class="close-btn" onclick="closeModal('modal-add-dog')" style="display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <input type="hidden" id="dog-edit-id">
     <div class="form-group"><label class="form-label">Naam</label><input type="text" id="dog-name" placeholder="bijv. Max, Bella"></div>
     <div class="form-group"><label class="form-label">Ras (optioneel)</label><input type="text" id="dog-breed" placeholder="bijv. Labrador, Bordercollie"></div>
-    <button class="btn btn-primary btn-block" onclick="saveDog()"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Toevoegen</button>
+    <button class="btn btn-primary btn-block" onclick="saveDog()"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span> <span id="dog-save-label">Toevoegen</span></button>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-add-member">
   <div class="modal">
-    <div class="modal-header"><div class="modal-title">Gezinslid toevoegen</div><button class="close-btn" onclick="closeModal('modal-add-member')" style="display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-header"><div class="modal-title" id="member-modal-title">Gezinslid toevoegen</div><button class="close-btn" onclick="closeModal('modal-add-member')" style="display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <input type="hidden" id="member-edit-id">
     <div class="form-group"><label class="form-label">Naam</label><input type="text" id="member-name" placeholder="bijv. Eva, Lotte"></div>
     <div class="form-group"><label class="form-label">Type</label><div class="chips" id="member-type-chips">
       <div class="chip active" data-val="adult" onclick="toggleChip(this,'member-type',false)"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> Volwassene</div>
@@ -574,7 +611,7 @@ color: var(–ink-2);
       <input type="number" id="member-birthyear" placeholder="bijv. 2018" min="2000" max="2025" oninput="updateAgePreview()">
       <div id="age-preview" style="font-size:12px;color:var(--ink-2);margin-top:4px"></div>
     </div>
-    <button class="btn btn-primary btn-block" onclick="saveMember()"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Toevoegen</button>
+    <button class="btn btn-primary btn-block" id="member-save-btn" onclick="saveMember()"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span> <span id="member-save-label">Toevoegen</span></button>
   </div>
 </div>
 
@@ -738,14 +775,6 @@ color: var(–ink-2);
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-import-preview">
-  <div class="modal">
-    <div class="modal-header"><div class="modal-title">Import bekijken</div><button class="close-btn" onclick="closeModal('modal-import-preview')" style="display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-    <div id="import-preview-content"></div>
-    <button class="btn btn-primary btn-block" style="margin-top:14px" onclick="confirmImport()"><span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span> Importeren</button>
-  </div>
-</div>
-
 <div class="modal-overlay" id="modal-trip-options">
   <div class="modal">
     <div class="modal-header"><div class="modal-title">Reis opties</div><button class="close-btn" onclick="closeModal('modal-trip-options')" style="display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
@@ -785,7 +814,6 @@ color: var(–ink-2);
 const CONFIG = {
   SUPABASE_URL: 'https://cijhtsvvhcolwbjhdyvq.supabase.co',
   SUPABASE_ANON_KEY: 'sb_publishable_3eBMKZzL74IXpv-jATJ9Xw_8veAz5Z_',
-  CLAUDE_API_KEY: 'JOUW_CLAUDE_API_KEY',
 };
 
 // ===== STATE =====
@@ -981,12 +1009,6 @@ function parseXLSX(buffer) {
 
 // ===== INIT =====
 window.onload = function() {
-  // Laad Claude key uit localStorage (persoonlijk, niet ingebakken)
-  try {
-    const s = JSON.parse(localStorage.getItem('packmate_settings') || '{}');
-    if (s.claudeKey) CONFIG.CLAUDE_API_KEY = s.claudeKey;
-  } catch(e) {}
-
   // Supabase credentials zijn ingebakken in de code
   sbUrl = CONFIG.SUPABASE_URL;
   sbKey = CONFIG.SUPABASE_ANON_KEY;
@@ -1065,8 +1087,34 @@ function doLogout() {
   document.getElementById('auth-screen').style.display = 'flex';
 }
 
-function showRegister() { document.getElementById('auth-login').style.display='none'; document.getElementById('auth-register').style.display='block'; }
-function showLogin() { document.getElementById('auth-login').style.display='block'; document.getElementById('auth-register').style.display='none'; }
+function showRegister() {
+  document.getElementById('auth-login').style.display='none';
+  document.getElementById('auth-register').style.display='block';
+  document.getElementById('auth-forgot').style.display='none';
+}
+function showLogin() {
+  document.getElementById('auth-login').style.display='block';
+  document.getElementById('auth-register').style.display='none';
+  document.getElementById('auth-forgot').style.display='none';
+}
+function showForgotPassword() {
+  document.getElementById('auth-login').style.display='none';
+  document.getElementById('auth-register').style.display='none';
+  document.getElementById('auth-forgot').style.display='block';
+}
+async function doForgotPassword() {
+  const email = document.getElementById('forgot-email').value.trim();
+  if (!email) { toast('Vul je e-mailadres in'); return; }
+  try {
+    await fetch(sbUrl + '/auth/v1/recover', {
+      method: 'POST',
+      headers: { 'apikey': sbKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    toast('Resetlink verstuurd naar ' + email);
+    showLogin();
+  } catch(e) { toast('Er ging iets mis, probeer opnieuw'); }
+}
 
 function showApp() {
   document.getElementById('auth-screen').style.display = 'none';
@@ -1154,7 +1202,7 @@ async function loadUserData() {
       db.packItems = {};
       ir.data.forEach(function(item) {
         if (!db.packItems[item.trip_id]) db.packItems[item.trip_id] = [];
-        db.packItems[item.trip_id].push({ id:item.id, name:item.name, category:item.category||'Overig', persons:item.persons||[], isGroup:!!item.is_group, packed:!!item.packed, isEssential:!!item.is_essential, dogId:item.dog_id||null, dogName:item.dog_name||null, aiGenerated:!!item.ai_generated });
+        db.packItems[item.trip_id].push({ id:item.id, name:item.name, category:item.category||'Overig', persons:item.persons||[], isGroup:!!item.is_group, packed:!!item.packed, isEssential:!!item.is_essential, dogId:item.dog_id||null, dogName:item.dog_name||null });
       });
     }
     if (er.data && er.data.length > 0) {
@@ -1199,8 +1247,7 @@ async function syncItem(item) {
       name: item.name, category: item.category, persons: item.persons||[],
       is_group: item.isGroup||false, packed: item.packed,
       is_essential: item.isEssential||false,
-      dog_id: item.dogId||null, dog_name: item.dogName||null,
-      ai_generated: item.aiGenerated||false
+      dog_id: item.dogId||null, dog_name: item.dogName||null
     });
   } catch(e) {}
 }
@@ -1260,6 +1307,7 @@ function showPage(page) {
   if (sideNav) sideNav.classList.add('active');
   if (page === 'essentials') renderEssentialsPage();
   if (page === 'household') { renderMembers(); renderDogs(); }
+  if (page === 'settings') { renderAccountInfo(); }
 }
 
 function openActivePack() {
@@ -1507,7 +1555,7 @@ function renderPackList() {
   if (activeActivityFilter !== 'all') items = items.filter(function(i){ return i.activity===activeActivityFilter; });
   if (search) items = items.filter(function(i){ return i.name.toLowerCase().indexOf(search.toLowerCase())!==-1; });
   if (items.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><div class="empty-title">Geen items gevonden</div><p>Voeg items toe of genereer een AI paklijst</p></div>';
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><div class="empty-title">Geen items gevonden</div><p>Voeg items toe via de knop hieronder</p></div>';
     return;
   }
   const cats = items.map(function(i){ return i.category; }).filter(function(v,i,a){ return a.indexOf(v)===i; });
@@ -1547,7 +1595,6 @@ function itemHTML(item) {
     + '<input type="checkbox"'+(item.packed?' checked':'')+' onchange="togglePacked(\''+item.id+'\',this.checked)">'
     + '<div class="pack-item-name">'+esc(item.name)
     + (item.isEssential?'<span class="essential-badge" style="margin-left:6px">&#9733;</span>':'')
-    + (item.aiGenerated?'<span style="margin-left:5px;font-size:10px;background:#E8F4FD;color:#1A4A5C;padding:2px 6px;border-radius:8px;font-weight:600">AI</span>':'')
     +'</div>'
     + personLabel
     + '<div class="pack-item-actions">'
@@ -1839,11 +1886,14 @@ function renderMembers() {
       + '<div class="avatar avatar-'+['ocean','coral','sage','gold'][i%4]+'">'+m.name[0]+'</div>'
       + '<div style="flex:1"><div style="font-weight:600">'+esc(m.name)+'</div>'
       + '<div style="font-size:12px;color:var(--ink-2)">'+memberAgeLabel(m)+'</div></div>'
-      + '<button class="icon-btn" data-member-id="'+m.id+'" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
+      + '<button class="icon-btn" data-edit-id="'+m.id+'" title="Aanpassen" style="color:var(--ink-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+      + '<button class="icon-btn" data-member-id="'+m.id+'" title="Verwijderen" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
   }).join('');
   div.onclick = function(ev) {
-    var btn = ev.target.closest('[data-member-id]');
-    if (btn) deleteMember(btn.dataset.memberId);
+    var del = ev.target.closest('[data-member-id]');
+    if (del) { deleteMember(del.dataset.memberId); return; }
+    var edit = ev.target.closest('[data-edit-id]');
+    if (edit) openEditMember(edit.dataset.editId);
   };
 }
 function updateAgePreview() {
@@ -1855,6 +1905,9 @@ function updateAgePreview() {
   el.textContent = age === 0 ? '→ Baby (< 1 jaar)' : age < 2 ? '→ Baby ('+age+' jaar)' : '→ Kind ('+age+' jaar)';
 }
 function openAddMember() {
+  document.getElementById('member-edit-id').value = '';
+  document.getElementById('member-modal-title').textContent = 'Gezinslid toevoegen';
+  document.getElementById('member-save-label').textContent = 'Toevoegen';
   document.getElementById('member-name').value = '';
   document.getElementById('member-birthyear').value = '';
   document.getElementById('member-birthyear-group').style.display = 'none';
@@ -1864,14 +1917,39 @@ function openAddMember() {
   chipState['member-type'] = 'adult';
   openModal('modal-add-member');
 }
+function openEditMember(id) {
+  var m = db.members.find(function(x){ return x.id === id; });
+  if (!m) return;
+  document.getElementById('member-edit-id').value = m.id;
+  document.getElementById('member-modal-title').textContent = 'Gezinslid aanpassen';
+  document.getElementById('member-save-label').textContent = 'Opslaan';
+  document.getElementById('member-name').value = m.name;
+  document.querySelectorAll('#member-type-chips .chip').forEach(function(c){ c.classList.remove('active'); });
+  var typeChip = document.querySelector('#member-type-chips .chip[data-val="'+(m.type||'adult')+'"]');
+  if (typeChip) typeChip.classList.add('active');
+  chipState['member-type'] = m.type || 'adult';
+  var isChild = m.type === 'child';
+  document.getElementById('member-birthyear-group').style.display = isChild ? 'block' : 'none';
+  document.getElementById('member-birthyear').value = m.birthYear || '';
+  document.getElementById('age-preview').textContent = '';
+  if (m.birthYear) updateAgePreview();
+  openModal('modal-add-member');
+}
 function saveMember() {
   const name = document.getElementById('member-name').value.trim();
   if (!name) { toast('Vul een naam in'); return; }
   const type = getChipValue('member-type') || 'adult';
   const birthYearVal = document.getElementById('member-birthyear').value;
   const birthYear = (type === 'child' && birthYearVal) ? parseInt(birthYearVal) : null;
-  db.members.push({ id:'member_'+Date.now(), name, type, birthYear, age: birthYear ? calcAge(birthYear) : null });
-  saveToStorage(); renderMembers(); closeModal('modal-add-member'); toast('Gezinslid toegevoegd');
+  const editId = document.getElementById('member-edit-id').value;
+  if (editId) {
+    var m = db.members.find(function(x){ return x.id === editId; });
+    if (m) { m.name = name; m.type = type; m.birthYear = birthYear; m.age = birthYear ? calcAge(birthYear) : null; }
+    saveToStorage(); renderMembers(); closeModal('modal-add-member'); toast('Gezinslid bijgewerkt');
+  } else {
+    db.members.push({ id:'member_'+Date.now(), name, type, birthYear, age: birthYear ? calcAge(birthYear) : null });
+    saveToStorage(); renderMembers(); closeModal('modal-add-member'); toast('Gezinslid toegevoegd');
+  }
 }
 function deleteMember(id) {
   db.members = db.members.filter(function(m){ return m.id!==id; });
@@ -1892,8 +1970,16 @@ function renderDogs() {
       + '<div style="flex:1"><div style="font-weight:600">' + esc(d.name) + '</div>'
       + (d.breed ? '<div style="font-size:12px;color:var(--ink-2)">' + esc(d.breed) + '</div>' : '')
       + '</div>'
-      + '<button style="background:none;border:none;color:var(--danger);cursor:pointer" data-id="' + d.id + '" onclick="deleteDog(this.dataset.id)" style="display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
+      + '<button class="icon-btn" data-dog-edit="' + d.id + '" title="Aanpassen" style="color:var(--ink-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+      + '<button class="icon-btn" data-dog-del="' + d.id + '" title="Verwijderen" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
+      + '</div>';
   }).join('');
+  div.onclick = function(ev) {
+    var del = ev.target.closest('[data-dog-del]');
+    if (del) { deleteDog(del.dataset.dogDel); return; }
+    var edit = ev.target.closest('[data-dog-edit]');
+    if (edit) openEditDog(edit.dataset.dogEdit);
+  };
 }
 
 function renderDogProfiles() {
@@ -1984,17 +2070,37 @@ function deleteDogItem() {
 }
 
 function openAddDog() {
+  document.getElementById('dog-edit-id').value = '';
+  document.getElementById('dog-modal-title').textContent = 'Hond toevoegen';
+  document.getElementById('dog-save-label').textContent = 'Toevoegen';
   document.getElementById('dog-name').value = '';
   document.getElementById('dog-breed').value = '';
+  openModal('modal-add-dog');
+}
+function openEditDog(id) {
+  var d = (db.dogs||[]).find(function(x){ return x.id === id; });
+  if (!d) return;
+  document.getElementById('dog-edit-id').value = d.id;
+  document.getElementById('dog-modal-title').textContent = 'Hond aanpassen';
+  document.getElementById('dog-save-label').textContent = 'Opslaan';
+  document.getElementById('dog-name').value = d.name;
+  document.getElementById('dog-breed').value = d.breed || '';
   openModal('modal-add-dog');
 }
 function saveDog() {
   const name = document.getElementById('dog-name').value.trim();
   if (!name) { toast('Vul een naam in'); return; }
   const breed = document.getElementById('dog-breed').value.trim();
+  const editId = document.getElementById('dog-edit-id').value;
   if (!db.dogs) db.dogs = [];
-  db.dogs.push({ id:'dog_'+Date.now(), name, breed });
-  saveToStorage(); renderDogs(); closeModal('modal-add-dog'); toast('Hond toegevoegd');
+  if (editId) {
+    var d = db.dogs.find(function(x){ return x.id === editId; });
+    if (d) { d.name = name; d.breed = breed; }
+    saveToStorage(); renderDogs(); renderDogProfiles(); closeModal('modal-add-dog'); toast('Hond bijgewerkt');
+  } else {
+    db.dogs.push({ id:'dog_'+Date.now(), name, breed });
+    saveToStorage(); renderDogs(); closeModal('modal-add-dog'); toast('Hond toegevoegd');
+  }
 }
 function deleteDog(id) {
   db.dogs = db.dogs.filter(function(d){ return d.id!==id; });
@@ -2489,85 +2595,52 @@ function confirmImport() {
 
 // ===== SETTINGS =====
 function populateSettingsForm() {
+  // Settings form is minimal - credentials are baked in
+}
+
+
+
+// ===== ACCOUNT =====
+function renderAccountInfo() {
+  var emailEl = document.getElementById('account-email-display');
+  var typeEl = document.getElementById('account-type-display');
+  var avatarEl = document.getElementById('account-avatar');
+  if (!emailEl || !currentUser) return;
+  var email = currentUser.email || '';
+  emailEl.textContent = email;
+  typeEl.textContent = currentUser.id === 'demo' ? 'Demo account' : 'PackMate account';
+  if (avatarEl) avatarEl.textContent = email ? email[0].toUpperCase() : '?';
+}
+function openChangePassword() {
+  if (currentUser && currentUser.id === 'demo') { toast('Niet beschikbaar in demo modus'); return; }
+  document.getElementById('new-password').value = '';
+  document.getElementById('confirm-password').value = '';
+  openModal('modal-change-password');
+}
+async function doChangePassword() {
+  var newPw = document.getElementById('new-password').value;
+  var confirmPw = document.getElementById('confirm-password').value;
+  if (!newPw) { toast('Vul een nieuw wachtwoord in'); return; }
+  if (newPw.length < 6) { toast('Wachtwoord minimaal 6 tekens'); return; }
+  if (newPw !== confirmPw) { toast('Wachtwoorden komen niet overeen'); return; }
   try {
-    const s = JSON.parse(localStorage.getItem('packmate_settings')||'{}');
-    if (s.claudeKey) { document.getElementById('setting-claude-key').value = s.claudeKey; CONFIG.CLAUDE_API_KEY = s.claudeKey; }
-    if (s.sbUrl) document.getElementById('setting-sb-url').value = s.sbUrl;
-    if (s.sbKey) document.getElementById('setting-sb-key').value = s.sbKey;
-  } catch(e) {}
-  updateClaudeKeyStatus();
-}
-function saveSettings() {
-  const s = {
-    claudeKey: document.getElementById('setting-claude-key').value,
-    sbUrl: document.getElementById('setting-sb-url').value,
-    sbKey: document.getElementById('setting-sb-key').value
-  };
-  try { localStorage.setItem('packmate_settings', JSON.stringify(s)); } catch(e) {}
-  if (s.claudeKey) CONFIG.CLAUDE_API_KEY = s.claudeKey;
-  if (s.sbUrl) { CONFIG.SUPABASE_URL = s.sbUrl; sbUrl = s.sbUrl; }
-  if (s.sbKey) { CONFIG.SUPABASE_ANON_KEY = s.sbKey; sbKey = s.sbKey; }
-}
-
-// ---- Claude key specific ----
-function onClaudeKeyInput() {
-  // Show/hide save button feedback as user types
-  const val = document.getElementById('setting-claude-key').value.trim();
-  const btn = document.getElementById('btn-save-claude-key');
-  if (btn) btn.textContent = val ? 'Opslaan' : 'Opslaan';
-}
-
-function saveClaudeKey() {
-  const key = document.getElementById('setting-claude-key').value.trim();
-  if (!key) { toast('Vul eerst een API key in'); return; }
-  if (!key.startsWith('sk-ant-')) { toast('Ongeldig formaat (moet beginnen met sk-ant-)'); return; }
-  try {
-    const s = JSON.parse(localStorage.getItem('packmate_settings') || '{}');
-    s.claudeKey = key;
-    localStorage.setItem('packmate_settings', JSON.stringify(s));
-  } catch(e) {}
-  CONFIG.CLAUDE_API_KEY = key;
-  updateClaudeKeyStatus();
-  toast('✅ Claude API key opgeslagen!');
-}
-
-function forgetClaudeKey() {
-  document.getElementById('setting-claude-key').value = '';
-  CONFIG.CLAUDE_API_KEY = 'JOUW_CLAUDE_API_KEY';
-  try {
-    const s = JSON.parse(localStorage.getItem('packmate_settings') || '{}');
-    delete s.claudeKey;
-    localStorage.setItem('packmate_settings', JSON.stringify(s));
-  } catch(e) {}
-  updateClaudeKeyStatus();
-  toast('Key vergeten');
-}
-
-function updateClaudeKeyStatus() {
-  const statusEl = document.getElementById('claude-key-status');
-  const forgetBtn = document.getElementById('btn-forget-claude-key');
-  const hasKey = CONFIG.CLAUDE_API_KEY && CONFIG.CLAUDE_API_KEY !== 'JOUW_CLAUDE_API_KEY';
-  if (statusEl) {
-    if (hasKey) {
-      statusEl.style.display = 'block';
-      statusEl.style.background = '#EAF4EC';
-      statusEl.style.color = '#2A6A3A';
-      statusEl.style.border = '1.5px solid #8AC8A0';
-      statusEl.textContent = '✅ Claude API key is ingesteld';
+    var res = await fetch(sbUrl + '/auth/v1/user', {
+      method: 'PUT',
+      headers: {
+        'apikey': sbKey,
+        'Authorization': 'Bearer ' + currentUser._token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ password: newPw })
+    });
+    if (res.ok) {
+      closeModal('modal-change-password');
+      toast('Wachtwoord gewijzigd!');
     } else {
-      statusEl.style.display = 'block';
-      statusEl.style.background = '#FBF3E0';
-      statusEl.style.color = '#7A6030';
-      statusEl.style.border = '1.5px solid var(--gold)';
-      statusEl.textContent = '<span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> Nog geen API key — vul hieronder je Anthropic key in om AI te gebruiken';
+      var data = await res.json();
+      toast('Fout: ' + (data.msg || data.error_description || 'Probeer opnieuw'));
     }
-  }
-  if (forgetBtn) forgetBtn.style.display = hasKey ? 'inline-flex' : 'none';
-  // Pre-fill field if key is set
-  const input = document.getElementById('setting-claude-key');
-  if (input && hasKey && !input.value) {
-    input.value = CONFIG.CLAUDE_API_KEY;
-  }
+  } catch(e) { toast('Er ging iets mis, probeer opnieuw'); }
 }
 
 // ===== CHIP HELPERS =====
@@ -2624,6 +2697,27 @@ function getSupabaseSQL() {
   return 'create table members (id text primary key, user_id uuid, name text, type text, age int);\ncreate table trips (id text primary key, user_id uuid, destination text, date_from text, date_to text, type text, transport jsonb, accommodation text, activities jsonb, participants jsonb, dog bool, is_template bool);\ncreate table pack_items (id text primary key, user_id uuid, trip_id text, name text, category text, persons jsonb, packed bool, is_essential bool);\ncreate table essentials (id text primary key, user_id uuid, name text, person_id text, category text);';
 }
 </script>
+
+<div class="modal-overlay" id="modal-change-password">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Wachtwoord wijzigen</div>
+      <button class="close-btn" onclick="closeModal('modal-change-password')" style="display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Nieuw wachtwoord</label>
+      <input type="password" id="new-password" placeholder="Minimaal 6 tekens" autocomplete="new-password">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Bevestig wachtwoord</label>
+      <input type="password" id="confirm-password" placeholder="Herhaal wachtwoord" autocomplete="new-password">
+    </div>
+    <button class="btn btn-primary btn-block" onclick="doChangePassword()">
+      <span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span>
+      Opslaan
+    </button>
+  </div>
+</div>
 
 </body>
 </html>

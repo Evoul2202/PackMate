@@ -49,7 +49,7 @@ background:var(–canvas); padding:24px;
 }
 .auth-card {
 background:var(–surface); padding:44px 36px; width:100%; max-width:400px;
-border:1px solid var(–line-2); border-top:3px solid var(–accent);
+border:1px solid var(–line-2); border-top:3px solid #1C1B18;
 }
 .auth-logo {
 font-family:var(–serif); font-size:2.4rem; font-weight:400; color:var(–ink);
@@ -57,7 +57,7 @@ text-align:center; margin-bottom:6px; letter-spacing:0.02em;
 }
 .auth-logo span { color:var(–accent); }
 .auth-tagline { text-align:center; color:var(–ink-2); margin-bottom:32px; font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:400; }
-.auth-divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(–ink-3); font-size:12px; }
+.auth-divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:#A8A5A0; font-size:12px; }
 .auth-divider::before, .auth-divider::after { content:’’; flex:1; height:1px; background:var(–line-2); }
 .auth-error { background:#FEF2F2; border:1.5px solid #FCA5A5; color:#991B1B; border-radius:var(–radius-sm); padding:10px 14px; font-size:13px; margin-bottom:14px; display:none; }
 
@@ -137,13 +137,13 @@ overflow-x: hidden;
 /* ─────────────────────────────────────────
 PAGE HEADERS
 ───────────────────────────────────────── */
-.page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; padding-bottom:14px; border-bottom:1px solid var(–line); }
-.page-title { font-family:var(–serif); font-size:1.65rem; font-weight:400; color:var(–ink); letter-spacing:0.01em; }
+.page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; padding-bottom:14px; border-bottom:2px solid #1C1B18; }
+.page-title { font-family:var(–serif); font-size:1.65rem; font-weight:400; color:#1C1B18; letter-spacing:0.01em; }
 
 /* ─────────────────────────────────────────
 CARDS
 ───────────────────────────────────────── */
-.card { background:var(–surface); padding:18px; margin-bottom:12px; border:1px solid var(–line); }
+.card { background:#FDFCFB; padding:20px; margin-bottom:12px; border:1px solid #E4E2DE; }
 .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
 .card-title { font-family:var(–serif); font-size:1.05rem; font-weight:400; color:var(–ink); }
 
@@ -195,7 +195,7 @@ font-weight: 400;
 .side-nav .nav-item.active {
 color: #1C1B18;
 background: #F2F1EF;
-border-left: 3px solid #4A6670;
+border-left: 3px solid #1C1B18;
 padding-left: 21px;
 }
 .side-nav .nav-item:hover { color: #1C1B18; background: #F2F1EF; }
@@ -225,7 +225,7 @@ DESKTOP  1024px+
 
 /* FORMS */
 .form-group { margin-bottom:18px; }
-.form-label { display:block; font-size:10.5px; font-weight:400; color:var(–ink-3); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
+.form-label { display:block; font-size:10.5px; font-weight:400; color:#A8A5A0; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
 input,select,textarea {
 width:100%; padding:11px 0; border:none; border-bottom:1px solid var(–line);
 border-radius:0; font-family:var(–sans); font-size:15px; background:transparent;
@@ -233,17 +233,17 @@ color:var(–ink); transition:border-color 0.2s; appearance:none; -webkit-appear
 font-weight:400;
 }
 input:focus,select:focus,textarea:focus { outline:none; border-bottom-color:var(–ink); }
-input::placeholder { color:var(–ink-3); font-weight:400; }
+input::placeholder { color:#A8A5A0; font-weight:400; }
 select { background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%23A8A5A0’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”); background-repeat:no-repeat; background-position:right 4px center; padding-right:24px; }
 
 /* BUTTONS */
-.btn { display:inline-flex; align-items:center; gap:6px; padding:clamp(10px,1.5vw,13px) clamp(16px,2.5vw,24px); border-radius:0; border:none; cursor:pointer; font-family:var(–sans); font-size:clamp(11.5px,1.2vw,13px); font-weight:400; transition:all 0.18s; letter-spacing:0.08em; text-transform:uppercase; }
-.btn-primary { background:var(–ink); color:white; }
-.btn-primary:hover { background:#2A2926; }
-.btn-coral { background:var(–danger); color:white; }
-.btn-coral:hover { background:#7A3030; }
-.btn-ghost { background:transparent; color:var(–ink); border:1px solid var(–line-2); }
-.btn-ghost:hover { border-color:var(–ink); background:var(–mist); }
+.btn { display:inline-flex; align-items:center; gap:7px; padding:11px 20px; border-radius:0; border:none; cursor:pointer; font-family:var(–sans); font-size:12px; font-weight:500; transition:all 0.18s; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; }
+.btn-primary { background:#1C1B18; color:#FFFFFF; }
+.btn-primary:hover { background:#2E2D2A; }
+.btn-coral { background:#7A4040; color:#FFFFFF; }
+.btn-coral:hover { background:#5A2E2E; }
+.btn-ghost { background:transparent; color:#1C1B18; border:1.5px solid #CCCAC5; }
+.btn-ghost:hover { border-color:#1C1B18; background:#F2F1EF; }
 .btn-sm { padding:7px 14px; font-size:11px; }
 .btn-block { width:100%; justify-content:center; }
 
@@ -255,28 +255,28 @@ cursor:pointer; border:1px solid var(–line-2); transition:all 0.15s;
 background:var(–surface); color:var(–ink); user-select:none;
 letter-spacing:0.03em;
 }
-.chip:hover { border-color:var(–ink); color:var(–ink); }
-.chip.active { background:var(–ink); color:white; border-color:var(–ink); }
-.chip.dog-chip { background:var(–gold-pale); color:var(–gold); border-color:#A8BEC4; }
-.chip.dog-chip.active { background:var(–gold); color:white; border-color:var(–gold); }
+.chip:hover { border-color:#1C1B18; color:#1C1B18; }
+.chip.active { background:#1C1B18; color:#FFFFFF; border-color:#1C1B18; }
+.chip.dog-chip { background:#EDEDEA; color:#3D3D3A; border-color:#CCCAC5; }
+.chip.dog-chip.active { background:#3D3D3A; color:#FFFFFF; border-color:#3D3D3A; }
 
 /* TRIP CARDS */
 .trip-card {
-background:var(–surface); overflow:hidden; margin-bottom:12px;
-border:1px solid var(–line); cursor:pointer; transition:border-color 0.2s;
+background:#FDFCFB; overflow:hidden; margin-bottom:12px;
+border:1px solid #E4E2DE; cursor:pointer; transition:border-color 0.2s, box-shadow 0.2s;
 }
-.trip-card:hover { border-color:var(–ink); }
-.trip-card-header { background:var(–ink); padding:20px; color:white; position:relative; }
-.trip-card-header::before { content:’’; position:absolute; top:0; left:0; right:0; height:2px; background:rgba(255,255,255,0.25); }
-.trip-dest { font-family:var(–serif); font-size:1.4rem; font-weight:400; letter-spacing:0.02em; }
-.trip-meta { font-size:11.5px; opacity:0.65; margin-top:6px; font-weight:300; letter-spacing:0.04em; }
-.trip-card-body { padding:14px 20px; }
+.trip-card:hover { border-color:#1C1B18; }
+.trip-card-header { background:#1C1B18; padding:20px; color:#FFFFFF; position:relative; }
+.trip-card-header::before { content:’’; position:absolute; top:0; left:0; right:0; height:2px; background:rgba(255,255,255,0.15); }
+.trip-dest { font-family:var(–serif); font-size:1.35rem; font-weight:400; letter-spacing:0.02em; color:#FFFFFF !important; }
+.trip-meta { font-size:11.5px; color:rgba(255,255,255,0.6); margin-top:6px; font-weight:300; letter-spacing:0.04em; }
+.trip-card-body { padding:14px 20px; background:#FDFCFB; }
 .trip-badges { display:flex; flex-wrap:wrap; gap:5px; }
-.badge { font-size:10.5px; padding:3px 9px; font-weight:400; background:var(–mist); color:var(–ink-2); letter-spacing:0.03em; }
-.badge-ocean { background:var(–mist); color:var(–ink); }
-.badge-sage { background:var(–mist); color:var(–ink-2); }
-.badge-coral { background:var(–danger-pale); color:var(–danger); }
-.badge-gold { background:var(–gold-pale); color:var(–gold); }
+.badge { font-size:10.5px; padding:4px 10px; font-weight:400; background:#F2F1EF; color:#6A6862; letter-spacing:0.03em; border:1px solid #E4E2DE; }
+.badge-ocean { background:#F2F1EF; color:#1C1B18; border:1px solid #E4E2DE; }
+.badge-sage { background:#F2F1EF; color:#6A6862; border:1px solid #E4E2DE; }
+.badge-coral { background:#F2EDED; color:#7A4040; border:1px solid #E8D8D8; }
+.badge-gold { background:#EDEDEA; color:#3D3D3A; border:1px solid #DDDDD8; }
 
 /* PACK LIST */
 .category-section { margin-bottom:20px; }
@@ -294,7 +294,7 @@ background:transparent;
 .pack-item.packed { opacity:1; }
 .pack-item input[type=“checkbox”] { width:16px; height:16px; min-width:16px; accent-color:var(–ink); cursor:pointer; border:none; padding:0; background:none; }
 .pack-item-name { flex:1; font-size:clamp(13.5px,1.5vw,15px); font-weight:400; }
-.pack-item.packed .pack-item-name { text-decoration:line-through; color:var(–ink-3); }
+.pack-item.packed .pack-item-name { text-decoration:line-through; color:#A8A5A0; }
 .pack-item-person { font-size:11px; color:var(–ink-2); background:var(–mist); padding:3px 9px; white-space:nowrap; letter-spacing:0.03em; border:1px solid var(–line-2); font-weight:400; }
 .pack-item-actions { display:flex; gap:2px; }
 .pack-item-actions button { background:none; border:none; cursor:pointer; color:var(–ink-2); padding:4px 5px; transition:color 0.12s; display:flex; align-items:center; }
@@ -316,7 +316,7 @@ color:var(–ink); letter-spacing:0.03em;
 .person-chip.active { background:var(–ink); color:white; border-color:var(–ink); }
 .search-wrap { position:relative; margin-bottom:14px; }
 .search-wrap input { padding-left:28px; border-bottom:1px solid var(–line); }
-.search-icon { position:absolute; left:0; top:50%; transform:translateY(-50%); color:var(–ink-3); pointer-events:none; display:flex; }
+.search-icon { position:absolute; left:0; top:50%; transform:translateY(-50%); color:#A8A5A0; pointer-events:none; display:flex; }
 
 /* MODAL */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(26,25,22,0.6); backdrop-filter:blur(6px); z-index:200; align-items:flex-end; justify-content:center; }
@@ -331,7 +331,7 @@ border-top:2px solid var(–line-2);
 .modal-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:22px; }
 .modal-title { font-family:var(–serif); font-size:1.4rem; font-weight:400; color:var(–ink); }
 .close-btn {
-background:none; border:none; cursor:pointer; color:var(–ink-3);
+background:none; border:none; cursor:pointer; color:#A8A5A0;
 padding:4px; display:flex; align-items:center; transition:color 0.15s; flex-shrink:0; margin-top:2px;
 }
 .close-btn:hover { color:var(–ink); }
@@ -346,13 +346,13 @@ padding:4px; display:flex; align-items:center; transition:color 0.15s; flex-shri
 .avatar-gold { background:var(–gold); }
 .progress-bar { height:2px; background:var(–line); overflow:hidden; margin:10px 0; }
 .progress-fill { height:100%; background:var(–ink); transition:width 0.5s ease; }
-.empty-state { text-align:center; padding:60px 24px; color:var(–ink-3); }
+.empty-state { text-align:center; padding:60px 24px; color:#A8A5A0; }
 .empty-icon { width:40px; height:40px; margin:0 auto 16px; opacity:0.35; }
 .empty-title { font-family:var(–serif); font-size:1.2rem; font-weight:400; color:var(–ink-2); margin-bottom:8px; }
 .person-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(–line); }
 .divider { height:1px; background:var(–line); margin:16px 0; }
-.settings-title { font-family:var(–serif); font-size:1.05rem; font-weight:400; color:var(–ink); padding-bottom:12px; border-bottom:1px solid var(–line); margin-bottom:16px; letter-spacing:0.02em; }
-.drop-area { border:1px dashed var(–line-2); padding:32px; text-align:center; cursor:pointer; color:var(–ink-3); transition:border-color 0.18s; }
+.settings-title { font-family:var(–serif); font-size:1.05rem; font-weight:400; color:#1C1B18; padding-bottom:12px; border-bottom:2px solid #1C1B18; margin-bottom:16px; letter-spacing:0.02em; }
+.drop-area { border:1px dashed var(–line-2); padding:32px; text-align:center; cursor:pointer; color:#A8A5A0; transition:border-color 0.18s; }
 .drop-area:hover { border-color:var(–ink); color:var(–ink-2); }
 .drop-area-icon { width:36px; height:36px; margin:0 auto 10px; opacity:0.4; }
 .config-notice { background:var(–gold-pale); border-left:3px solid var(–gold); padding:12px 14px; font-size:12.5px; color:var(–gold); margin-bottom:16px; }
@@ -414,7 +414,7 @@ color: var(–ink-2);
   <div class="auth-error" id="login-error"></div>
   <button class="btn btn-primary btn-block" onclick="doLogin()">Inloggen</button>
   <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
-    Nog geen account? <a href="#" onclick="showRegister()" style="color:var(--accent);font-weight:600">Registreer gratis</a>
+    Nog geen account? <a href="#" onclick="showRegister()" style="color:#1C1B18;font-weight:600;text-decoration:underline">Registreer gratis</a>
   </div>
   <div class="auth-divider">of</div>
   <button class="btn btn-ghost btn-block btn-sm" onclick="demoMode()">Probeer demo (geen account)</button>
@@ -433,7 +433,7 @@ color: var(–ink-2);
   <div class="auth-error" id="register-error"></div>
   <button class="btn btn-primary btn-block" onclick="doRegister()">Account aanmaken</button>
   <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
-    Al een account? <a href="#" onclick="showLogin()" style="color:var(--accent);font-weight:600">Inloggen</a>
+    Al een account? <a href="#" onclick="showLogin()" style="color:#1C1B18;font-weight:600;text-decoration:underline">Inloggen</a>
   </div>
 </div>
 
@@ -446,7 +446,7 @@ color: var(–ink-2);
   </div>
   <button class="btn btn-primary btn-block" onclick="doForgotPassword()">Resetlink versturen</button>
   <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
-    <a href="#" onclick="showLogin()" style="color:var(--accent);font-weight:600">Terug naar inloggen</a>
+    <a href="#" onclick="showLogin()" style="color:#1C1B18;font-weight:600;text-decoration:underline">Terug naar inloggen</a>
   </div>
 </div>
 ```
@@ -458,7 +458,7 @@ color: var(–ink-2);
 
 <div id="app" style="display:none;flex-direction:column;min-height:100vh">
   <div class="topbar" style="display:flex;align-items:center;gap:12px;padding:0 20px;height:56px;background:#FDFCFB;border-bottom:1px solid #E4E2DE;position:sticky;top:0;z-index:100;flex-shrink:0">
-    <div class="topbar-logo" style="flex:1;font-family:'Libre Baskerville',serif;font-size:1.45rem;color:#1C1B18;letter-spacing:0.02em">Pack<span style="color:#4A6670">Mate</span></div>
+    <div class="topbar-logo" style="flex:1;font-family:'Libre Baskerville',serif;font-size:1.45rem;color:#1C1B18;letter-spacing:0.02em">Pack<span style="color:#6A6862">Mate</span></div>
     <button onclick="doLogout()" title="Uitloggen" style="background:none;border:none;cursor:pointer;color:#6A6862;display:flex;align-items:center;padding:8px;min-width:44px;min-height:44px;justify-content:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
   </div>
 
@@ -607,8 +607,8 @@ color: var(–ink-2);
       <div class="form-group"><label class="form-label">Terug</label><input type="date" id="trip-to"></div>
     </div>
     <div class="form-group"><label class="form-label">Reistype</label><div class="chips" id="trip-type-chips">
-      <div class="chip" data-val="holiday" onclick="toggleChip(this,'trip-type',false)">🏖️ Vakantie</div>
-      <div class="chip" data-val="business" onclick="toggleChip(this,'trip-type',false)">💼 Zakelijk</div>
+      <div class="chip" data-val="holiday" onclick="toggleChip(this,'trip-type',false)"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2m-3.5-7.5-1.5 1.5M5.5 18.5l1.5-1.5m0-12L5.5 5.5M18.5 18.5l-1.5-1.5"/></svg></span> Vakantie</div>
+      <div class="chip" data-val="business" onclick="toggleChip(this,'trip-type',false)"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></span> Zakelijk</div>
     </div></div>
     <div class="form-group"><label class="form-label">Vervoer (meerdere mogelijk)</label><div class="chips" id="transport-chips">
       <div class="chip" data-val="car" onclick="toggleChip(this,'transport',true)"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="11" width="22" height="9" rx="2"/><path d="M5 11l2.5-5h9L19 11"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg></span> Auto</div>
@@ -707,7 +707,7 @@ color: var(–ink-2);
     <label class="form-label">Namen — één per regel</label>
     <textarea id="new-item-bulk" rows="5" placeholder="Zonnebrand SPF50&#10;Zonnebril&#10;Strandlaken&#10;Zwembroek"
       style="width:100%;border:none;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:14px;background:transparent;color:var(--ink);resize:vertical;padding:8px 0;outline:none;font-weight:400;line-height:1.6"></textarea>
-    <div style="font-size:11.5px;color:var(--ink-3);margin-top:5px">Alle items krijgen dezelfde categorie en deelnemers.</div>
+    <div style="font-size:11.5px;color:#A8A5A0;margin-top:5px">Alle items krijgen dezelfde categorie en deelnemers.</div>
   </div>
 </div>
 
@@ -776,7 +776,7 @@ color: var(–ink-2);
     <label class="form-label">Namen — één per regel</label>
     <textarea id="lib-item-bulk" rows="5" placeholder="Skischoenen&#10;Skihelm&#10;Skipassen&#10;Handschoenen"
       style="width:100%;border:none;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:14px;background:transparent;color:var(--ink);resize:vertical;padding:8px 0;outline:none;font-weight:400;line-height:1.6"></textarea>
-    <div style="font-size:11.5px;color:var(--ink-3);margin-top:5px">Alle items krijgen dezelfde categorie, deelnemers en trigger.</div>
+    <div style="font-size:11.5px;color:#A8A5A0;margin-top:5px">Alle items krijgen dezelfde categorie, deelnemers en trigger.</div>
   </div>
 </div>
 <div class="form-group"><label class="form-label">Categorie</label><select id="essential-category"></select></div>
@@ -2334,7 +2334,7 @@ function renderEssentialsPage() {
   var container = document.getElementById('essentials-page-list');
   if (!container) return;
   if (list.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="empty-icon" style="color:var(--ink-3);width:48px;height:48px;margin:0 auto 14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><div class="empty-title">Geen items</div><p>Voeg items toe die automatisch worden meegenomen op reizen.</p></div>';
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon" style="color:#A8A5A0;width:48px;height:48px;margin:0 auto 14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><div class="empty-title">Geen items</div><p>Voeg items toe die automatisch worden meegenomen op reizen.</p></div>';
     return;
   }
   // Group by category

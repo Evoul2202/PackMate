@@ -58,8 +58,10 @@ text-align:center; margin-bottom:6px; letter-spacing:0.02em;
 .auth-tagline { text-align:center; color:var(–ink-2); margin-bottom:32px; font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:400; }
 .auth-divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(–ink-3); font-size:12px; }
 .auth-divider::before, .auth-divider::after { content:’’; flex:1; height:1px; background:var(–line-2); }
+.auth-error { background:#FEF2F2; border:1.5px solid #FCA5A5; color:#991B1B; border-radius:var(–radius-sm); padding:10px 14px; font-size:13px; margin-bottom:14px; display:none; }
 .auth-divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(–ink-3); font-size:12px; }
 .auth-divider::before, .auth-divider::after { content:’’; flex:1; height:1px; background:var(–line-2); }
+.auth-error { background:#FEF2F2; border:1.5px solid #FCA5A5; color:#991B1B; border-radius:var(–radius-sm); padding:10px 14px; font-size:13px; margin-bottom:14px; display:none; }
 
 /* ─────────────────────────────────────────
 APP SHELL
@@ -369,6 +371,7 @@ color: var(–ink-2);
   <div style="text-align:right;margin-top:-8px;margin-bottom:16px">
     <a href="#" onclick="showForgotPassword()" style="font-size:12.5px;color:var(--ink-2);">Wachtwoord vergeten?</a>
   </div>
+  <div class="auth-error" id="login-error"></div>
   <button class="btn btn-primary btn-block" onclick="doLogin()">Inloggen</button>
   <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
     Nog geen account? <a href="#" onclick="showRegister()" style="color:var(--accent);font-weight:600">Registreer gratis</a>
@@ -387,6 +390,7 @@ color: var(–ink-2);
     <label class="form-label">Wachtwoord</label>
     <input type="password" id="reg-password" placeholder="Minimaal 6 tekens" autocomplete="new-password">
   </div>
+  <div class="auth-error" id="register-error"></div>
   <button class="btn btn-primary btn-block" onclick="doRegister()">Account aanmaken</button>
   <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
     Al een account? <a href="#" onclick="showLogin()" style="color:var(--accent);font-weight:600">Inloggen</a>
@@ -1042,12 +1046,33 @@ window.onload = function() {
 };
 
 // ===== AUTH =====
+function showAuthError(id, msg) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+function clearAuthError(id) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = 'none';
+}
+function friendlyAuthError(error) {
+  var e = (error || '').toString().toLowerCase();
+  if (e.includes('invalid login') || e.includes('invalid credentials') || e.includes('email not confirmed')) return 'E-mailadres of wachtwoord is onjuist.';
+  if (e.includes('user not found') || e.includes('no user')) return 'Er bestaat geen account met dit e-mailadres.';
+  if (e.includes('email already') || e.includes('already registered')) return 'Dit e-mailadres is al in gebruik.';
+  if (e.includes('password') && e.includes('short')) return 'Wachtwoord is te kort (minimaal 6 tekens).';
+  if (e.includes('invalid email') || e.includes('unable to validate')) return 'Vul een geldig e-mailadres in.';
+  if (e.includes('network') || e.includes('fetch')) return 'Geen verbinding. Controleer je internet.';
+  return 'Er ging iets mis. Probeer het opnieuw.';
+}
 async function doLogin() {
   const email = document.getElementById('auth-email').value.trim();
   const pw = document.getElementById('auth-password').value;
-  if (!email || !pw) { toast('Vul e-mail en wachtwoord in'); return; }
+  clearAuthError('login-error');
+  if (!email || !pw) { showAuthError('login-error', 'Vul je e-mailadres en wachtwoord in.'); return; }
   const { data, error } = await SB.auth.signIn(email, pw);
-  if (error) { toast('Inloggen mislukt: ' + error); return; }
+  if (error) { showAuthError('login-error', friendlyAuthError(error)); return; }
   currentUser = data.user;
   try { localStorage.setItem('packmate_user', JSON.stringify(currentUser)); } catch(e) {}
   await loadUserData();
@@ -1057,12 +1082,12 @@ async function doLogin() {
 async function doRegister() {
   const email = document.getElementById('reg-email').value.trim();
   const pw = document.getElementById('reg-password').value;
-  const name = (document.getElementById('reg-name')||{}).value || '';
-  if (!email || !pw) { toast('Vul e-mail en wachtwoord in'); return; }
-  if (pw.length < 6) { toast('Wachtwoord minimaal 6 tekens'); return; }
+  clearAuthError('register-error');
+  if (!email) { showAuthError('register-error', 'Vul je e-mailadres in.'); return; }
+  if (!pw) { showAuthError('register-error', 'Vul een wachtwoord in.'); return; }
+  if (pw.length < 6) { showAuthError('register-error', 'Wachtwoord moet minimaal 6 tekens zijn.'); return; }
   const { data, error } = await SB.auth.signUp(email, pw);
-  if (error) { toast('Registreren mislukt: ' + error); return; }
-  // Directly sign in after registration
+  if (error) { showAuthError('register-error', friendlyAuthError(error)); return; }
   const { data: loginData, error: loginErr } = await SB.auth.signIn(email, pw);
   if (loginErr) { toast('Account aangemaakt! Log in om te beginnen.'); showLogin(); return; }
   currentUser = loginData.user;
@@ -1091,11 +1116,13 @@ function showRegister() {
   document.getElementById('auth-login').style.display='none';
   document.getElementById('auth-register').style.display='block';
   document.getElementById('auth-forgot').style.display='none';
+  clearAuthError('register-error');
 }
 function showLogin() {
   document.getElementById('auth-login').style.display='block';
   document.getElementById('auth-register').style.display='none';
   document.getElementById('auth-forgot').style.display='none';
+  clearAuthError('login-error');
 }
 function showForgotPassword() {
   document.getElementById('auth-login').style.display='none';

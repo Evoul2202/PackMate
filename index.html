@@ -2576,7 +2576,7 @@ function updateTriggerValueOptions(tType, selected) {
   });
 }
 
-function saveLibraryItem() {
+async function saveLibraryItem() {
   var isBulk = document.getElementById('lib-item-mode-bulk').classList.contains('active');
   var whoList = Array.isArray(chipState['essential-who']) ? chipState['essential-who'] : [chipState['essential-who'] || 'group'];
   if (whoList.length === 0) whoList = ['group'];
@@ -2586,7 +2586,6 @@ function saveLibraryItem() {
   var editId = document.getElementById('edit-essential-id').value;
 
   if (editId) {
-    // Edit mode: always single item, use name field
     var name = document.getElementById('essential-name').value.trim();
     if (!name) { toast('Vul een naam in'); return; }
     var existing = db.essentials.find(function(x){ return x.id===editId; });
@@ -2596,6 +2595,9 @@ function saveLibraryItem() {
       existing.category = category;
       existing.triggerType = triggerType;
       existing.triggerValues = triggerValues;
+      if (currentUser) {
+        await SB.upsert('essentials', { id:existing.id, user_id:currentUser.id, name:existing.name, person_id:existing.personId||'group', category:existing.category||'Overig', trigger_type:existing.triggerType||'always', trigger_values:existing.triggerValues||[] });
+      }
     }
     toast('Item bijgewerkt');
     saveToStorage(); renderEssentialsPage(); closeModal('modal-add-essential');
@@ -2617,27 +2619,25 @@ function saveLibraryItem() {
   }
 
   var baseTime = Date.now();
-  var totalAdded = 0;
+  var newItems = [];
   names.forEach(function(name, ni) {
     whoList.forEach(function(personId, wi) {
-      db.essentials.push({
-        id: 'ess_' + baseTime + '_' + ni + '_' + wi,
-        name: name,
-        personId: personId,
-        category: category,
-        triggerType: triggerType,
-        triggerValues: triggerValues.slice()
-      });
-      totalAdded++;
+      var item = { id:'ess_'+baseTime+'_'+ni+'_'+wi, name:name, personId:personId, category:category, triggerType:triggerType, triggerValues:triggerValues.slice() };
+      db.essentials.push(item);
+      newItems.push(item);
     });
   });
 
-  if (names.length > 1) {
-    toast(names.length + ' items toegevoegd');
-  } else {
-    toast(whoList.length > 1 ? 'Item toegevoegd voor ' + whoList.length + ' personen' : 'Item toegevoegd');
-  }
   saveToStorage(); renderEssentialsPage(); closeModal('modal-add-essential');
+  if (names.length > 1) { toast(names.length + ' items toegevoegd'); }
+  else { toast(whoList.length > 1 ? 'Item toegevoegd voor ' + whoList.length + ' personen' : 'Item toegevoegd'); }
+
+  if (currentUser) {
+    for (var i = 0; i < newItems.length; i++) {
+      var e = newItems[i];
+      await SB.upsert('essentials', { id:e.id, user_id:currentUser.id, name:e.name, person_id:e.personId||'group', category:e.category||'Overig', trigger_type:e.triggerType||'always', trigger_values:e.triggerValues||[] });
+    }
+  }
 }
 
 function switchLibItemMode(mode) {
@@ -2651,12 +2651,20 @@ function switchLibItemMode(mode) {
 // Legacy alias
 function saveEssential() { saveLibraryItem(); }
 
-function deleteLibItem(id) {
+async function deleteLibItem(id) {
+  if (currentUser) {
+    await SB.delete('essentials', 'id=eq.' + id + '&user_id=eq.' + currentUser.id);
+  }
   db.essentials = db.essentials.filter(function(e){ return e.id!==id; });
   saveToStorage(); renderEssentialsPage();
 }
-function deleteLibGroup(ids) {
+async function deleteLibGroup(ids) {
   var idList = ids.split(',');
+  if (currentUser) {
+    for (var i = 0; i < idList.length; i++) {
+      await SB.delete('essentials', 'id=eq.' + idList[i] + '&user_id=eq.' + currentUser.id);
+    }
+  }
   db.essentials = db.essentials.filter(function(e){ return idList.indexOf(e.id) === -1; });
   saveToStorage(); renderEssentialsPage();
 }

@@ -924,7 +924,15 @@ const SB = {
     return this.req('POST', table + '?on_conflict=id', row);
   },
   async delete(table, filter) {
-    return this.req('DELETE', table + '?' + filter, null);
+    if (!sbUrl || !sbKey) return { data: null, error: 'No Supabase config' };
+    try {
+      const headers = this.getHeaders(currentUser?._token);
+      delete headers['Prefer'];
+      const res = await fetch(sbUrl + '/rest/v1/' + table + '?' + filter, {
+        method: 'DELETE', headers
+      });
+      return res.ok ? { data: null, error: null } : { data: null, error: res.status };
+    } catch(e) { return { data: null, error: e.message }; }
   },
   auth: {
     async signIn(email, password) {
@@ -1567,6 +1575,12 @@ async function deleteTrip() {
   if (!activeTrip) return;
   var tripId = activeTrip.id;
   var dest = activeTrip.destination;
+  // Delete from Supabase FIRST, before updating local state
+  if (currentUser) {
+    var uid = currentUser.id;
+    await SB.delete('pack_items', 'trip_id=eq.' + tripId + '&user_id=eq.' + uid);
+    await SB.delete('trips', 'id=eq.' + tripId + '&user_id=eq.' + uid);
+  }
   delete db.packItems[tripId];
   db.trips = db.trips.filter(function(t){ return t.id !== tripId; });
   activeTrip = null;
@@ -1575,12 +1589,6 @@ async function deleteTrip() {
   renderTrips();
   showPage('trips');
   toast(dest + ' verwijderd');
-  // Delete from Supabase
-  if (currentUser) {
-    var uid = currentUser.id;
-    await SB.delete('pack_items', 'trip_id=eq.' + tripId + '&user_id=eq.' + uid);
-    await SB.delete('trips', 'id=eq.' + tripId + '&user_id=eq.' + uid);
-  }
 }
 
 function openTripOptions() {

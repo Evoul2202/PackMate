@@ -946,7 +946,7 @@ const SB = {
         });
         const data = await res.json();
         if (data.access_token) {
-          return { data: { user: { id: data.user.id, email: data.user.email, _token: data.access_token } }, error: null };
+          return { data: { user: { id: data.user.id, email: data.user.email, _token: data.access_token, _refreshToken: data.refresh_token } }, error: null };
         }
         return { data: null, error: data.error_description || data.msg || 'Login mislukt' };
       } catch(e) { return { data: null, error: e.message }; }
@@ -1094,7 +1094,30 @@ window.onload = function() {
   const saved = JSON.parse(localStorage.getItem('packmate_user') || 'null');
   if (saved && saved.id) {
     currentUser = saved;
-    loadUserData().then(function(){ showApp(); });
+    // Refresh token if it exists (Supabase tokens expire after 1 hour)
+    (async function() {
+      if (saved._token && saved._refreshToken) {
+        try {
+          const res = await fetch(sbUrl + '/auth/v1/token?grant_type=refresh_token', {
+            method: 'POST',
+            headers: { 'apikey': sbKey, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refresh_token: saved._refreshToken })
+          });
+          const data = await res.json();
+          if (data.access_token) {
+            currentUser._token = data.access_token;
+            if (data.refresh_token) currentUser._refreshToken = data.refresh_token;
+            try { localStorage.setItem('packmate_user', JSON.stringify(currentUser)); } catch(e) {}
+          } else {
+            currentUser = null;
+            localStorage.removeItem('packmate_user');
+            return;
+          }
+        } catch(e) {}
+      }
+      await loadUserData();
+      showApp();
+    })();
   }
 };
 

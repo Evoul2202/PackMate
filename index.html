@@ -923,6 +923,9 @@ const SB = {
   async upsert(table, row) {
     return this.req('POST', table + '?on_conflict=id', row);
   },
+  async delete(table, filter) {
+    return this.req('DELETE', table + '?' + filter, null);
+  },
   auth: {
     async signIn(email, password) {
       if (!sbUrl || !sbKey) return { data: null, error: 'No Supabase config' };
@@ -1513,21 +1516,36 @@ function saveTrip(asTemplate) {
 
 function addEssentialsToTrip(trip) {
   var participants = trip.participants || [];
+  // Group essentials by name+category — merge multiple persons into one item
+  var grouped = {};
   db.essentials.forEach(function(e) {
     if (!itemMatchesTrip(e, trip)) return;
-    var items = db.packItems[trip.id];
+    var key = e.name + '||' + (e.category||'Overig');
+    if (!grouped[key]) grouped[key] = { essential: e, persons: [], isDog: false };
+    if (e.triggerType === 'dog') {
+      grouped[key].isDog = true;
+    } else if (e.personId === 'group') {
+      grouped[key].isGroup = true;
+    } else if (participants.map(String).indexOf(String(e.personId)) !== -1) {
+      grouped[key].persons.push(e.personId);
+    }
+  });
+  var items = db.packItems[trip.id];
+  Object.keys(grouped).forEach(function(key) {
+    var g = grouped[key];
+    var e = g.essential;
+    // Skip if item with same name already exists
     if (items.find(function(i){ return i.name===e.name; })) return;
     var uid = 'item_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
     var actTag = (e.triggerType === 'activity' && e.triggerValues && e.triggerValues.length) ? e.triggerValues[0] : null;
-    if (e.triggerType === 'dog') {
-      // Dog item: add to pack list tagged with the dog
+    if (g.isDog) {
       var dog = db.dogs.find(function(d){ return d.id===e.personId; });
-      var dogName = dog ? dog.name : 'Hond';
-      items.push({ id:uid, name:e.name, category:e.category||'Huisdier', persons:[], isGroup:false, dogId:e.personId, dogName:dogName, packed:false, isEssential:true });
-    } else if (e.personId === 'group') {
+      items.push({ id:uid, name:e.name, category:e.category||'Huisdier', persons:[], isGroup:false, dogId:e.personId, dogName:dog?dog.name:'Hond', packed:false, isEssential:true });
+    } else if (g.isGroup) {
       items.push({ id:uid, name:e.name, category:e.category||'Overig', persons:[], isGroup:true, packed:false, isEssential:true, activity:actTag });
-    } else if (participants.indexOf(e.personId) !== -1) {
-      items.push({ id:uid, name:e.name, category:e.category||'Overig', persons:[e.personId], isGroup:false, packed:false, isEssential:true, activity:actTag });
+    } else if (g.persons.length > 0) {
+      // Multiple persons → one item with all persons listed
+      items.push({ id:uid, name:e.name, category:e.category||'Overig', persons:g.persons, isGroup:false, packed:false, isEssential:true, activity:actTag });
     }
   });
 }
@@ -1545,7 +1563,7 @@ function duplicateTrip(trip) {
   closeModal('modal-trip-options');
 }
 
-function deleteTrip() {
+async function deleteTrip() {
   if (!activeTrip) return;
   var tripId = activeTrip.id;
   var dest = activeTrip.destination;
@@ -1557,6 +1575,12 @@ function deleteTrip() {
   renderTrips();
   showPage('trips');
   toast(dest + ' verwijderd');
+  // Delete from Supabase
+  if (currentUser) {
+    var uid = currentUser.id;
+    await SB.delete('pack_items', 'trip_id=eq.' + tripId + '&user_id=eq.' + uid);
+    await SB.delete('trips', 'id=eq.' + tripId + '&user_id=eq.' + uid);
+  }
 }
 
 function openTripOptions() {
@@ -1600,6 +1624,15 @@ function renderTripHeader() {
     participants.forEach(function(p){
       ph += '<div class="person-chip '+(activePersonFilter===p.id?'active':'')+'" onclick="setPersonFilter(\''+p.id+'\',this)">'+esc(p.name)+'</div>';
     });
+    // Add dog filter chips if trip has dog items
+    if (activeTrip.dog && db.dogs && db.dogs.length) {
+      var tripDogItems = (db.packItems[activeTrip.id]||[]).filter(function(i){ return i.dogId; });
+      var dogIds = tripDogItems.map(function(i){ return i.dogId; }).filter(function(v,i,a){ return a.indexOf(v)===i; });
+      dogIds.forEach(function(did){
+        var dog = db.dogs.find(function(d){ return d.id===did; });
+        if (dog) ph += '<div class="person-chip '+(activePersonFilter===did?'active':'')+'" onclick="setPersonFilter(\''+did+'\',this)">'+esc(dog.name)+'</div>';
+      });
+    }
     pRow.innerHTML = ph;
   }
   renderCategoryFilter();
@@ -1647,6 +1680,8 @@ function renderPackList() {
   if (packFilter === 'packed') items = items.filter(function(i){ return i.packed; });
   if (packFilter === 'unpacked') items = items.filter(function(i){ return !i.packed; });
   if (activePersonFilter !== 'all') items = items.filter(function(i){
+    // Dog filter: show dog items for that dog + group items
+    if (i.dogId) return String(i.dogId) === String(activePersonFilter);
     if (i.isGroup || !i.persons || i.persons.length === 0) return true; // group items always visible
     var normalizedPersons = i.persons.map(function(p){ return String(p); });
     return normalizedPersons.indexOf(String(activePersonFilter)) !== -1;

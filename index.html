@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="color-scheme" content="light">
 <title>PackMate – Slimme Paklijst</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,6 +37,8 @@
 
 –serif: ‘Libre Baskerville’, Georgia, serif;
 –sans:  ‘Outfit’, -apple-system, sans-serif;
+
+color-scheme: light;
 }
 
 - { box-sizing:border-box; margin:0; padding:0; }
@@ -48,15 +51,16 @@ min-height:100vh; display:flex; align-items:center; justify-content:center;
 background:#16150F; padding:24px;
 }
 .auth-card {
-background:var(–surface); padding:44px 36px; width:100%; max-width:400px;
-border:1px solid var(–line-2); border-top:2px solid var(–line-2);
+background:#FDFCFB; padding:44px 36px; width:100%; max-width:400px;
+border:1px solid #CCCAC5; border-top:2px solid #CCCAC5;
+color-scheme: light;
 }
 .auth-logo {
-font-family:var(–serif); font-size:2.4rem; font-weight:400; color:var(–ink);
+font-family:var(–serif); font-size:2.4rem; font-weight:400; color:#1C1B18;
 text-align:center; margin-bottom:6px; letter-spacing:0.02em;
 }
-.auth-logo span { color:var(–gold); }
-.auth-tagline { text-align:center; color:var(–ink-2); margin-bottom:32px; font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:400; }
+.auth-logo span { color:#4A6670; }
+.auth-tagline { text-align:center; color:#6A6862; margin-bottom:32px; font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:400; }
 .auth-divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:#A8A5A0; font-size:12px; }
 .auth-divider::before, .auth-divider::after { content:’’; flex:1; height:1px; background:var(–line-2); }
 .auth-error { background:#FEF2F2; border:1.5px solid #FCA5A5; color:#991B1B; border-radius:var(–radius-sm); padding:10px 14px; font-size:13px; margin-bottom:14px; display:none; }
@@ -232,13 +236,20 @@ DESKTOP  1024px+
 .form-group { margin-bottom:18px; }
 .form-label { display:block; font-size:10.5px; font-weight:400; color:#A8A5A0; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
 input,select,textarea {
-width:100%; padding:11px 0; border:none; border-bottom:1px solid var(–line);
+width:100%; padding:11px 0; border:none; border-bottom:1px solid #E4E2DE;
 border-radius:0; font-family:var(–sans); font-size:15px; background:transparent;
-color:var(–ink); transition:border-color 0.2s; appearance:none; -webkit-appearance:none;
+color:#1C1B18; transition:border-color 0.2s; appearance:none; -webkit-appearance:none;
 font-weight:400;
 }
-input:focus,select:focus,textarea:focus { outline:none; border-bottom-color:var(–ink); }
+input:focus,select:focus,textarea:focus { outline:none; border-bottom-color:#1C1B18; }
 input::placeholder { color:#A8A5A0; font-weight:400; }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+-webkit-box-shadow: 0 0 0px 1000px #FDFCFB inset !important;
+-webkit-text-fill-color: #1C1B18 !important;
+border-bottom-color: #E4E2DE !important;
+}
 select { background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%23A8A5A0’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”); background-repeat:no-repeat; background-position:right 4px center; padding-right:24px; }
 
 /* BUTTONS */

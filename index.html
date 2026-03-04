@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="nl">
+<html lang="nl" style="color-scheme: light; -webkit-color-scheme: light;">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -10,40 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:         #F8F7F5;
-  --canvas:     #F8F7F5;
-  --surface:    #FDFCFB;
-  --surface-2:  #F2F1EF;
-  --mist:       #F2F1EF;
-  --line:       #E4E2DE;
-  --line-2:     #CCCAC5;
-
-–ink:        #1C1B18;
-–ink-2:      #6A6862;
-–ink-3:      #A8A5A0;
-
-–accent:     #4A6670;
-–accent-pale:#EBF0F2;
-–gold:       #4A6670;
-–gold-pale:  #EBF0F2;
-
-–danger:     #7A4040;
-–danger-pale:#F2EDED;
-
-–border:     #E4E2DE;
-–radius:     2px;
-–radius-sm:  2px;
-
-–serif: ‘Libre Baskerville’, Georgia, serif;
-–sans:  ‘Outfit’, -apple-system, sans-serif;
-
-color-scheme: light;
-}
+:root { color-scheme: light only; }
 
 - { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:var(–sans); background:var(–bg); color:var(–ink); min-height:100vh; font-size:15px; -webkit-font-smoothing:antialiased; font-weight:400; }
-  h1,h2,h3,.serif { font-family:var(–serif); }
+  body { font-family:-apple-system,sans-serif; background:#F8F7F5 !important; color:#1C1B18 !important; min-height:100vh; font-size:15px; color-scheme: light only; -webkit-color-scheme: light; -webkit-font-smoothing:antialiased; font-weight:400; }
+  h1,h2,h3,.serif { font-family:Georgia,serif; }
 
 /* AUTH */
 #auth-screen {
@@ -56,14 +27,14 @@ border:1px solid #CCCAC5; border-top:2px solid #CCCAC5;
 color-scheme: light;
 }
 .auth-logo {
-font-family:var(–serif); font-size:2.4rem; font-weight:400; color:#1C1B18;
+font-family:Georgia,serif; font-size:2.4rem; font-weight:400; color:#1C1B18;
 text-align:center; margin-bottom:6px; letter-spacing:0.02em;
 }
 .auth-logo span { color:#4A6670; }
 .auth-tagline { text-align:center; color:#6A6862; margin-bottom:32px; font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:400; }
 .auth-divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:#A8A5A0; font-size:12px; }
-.auth-divider::before, .auth-divider::after { content:’’; flex:1; height:1px; background:var(–line-2); }
-.auth-error { background:#FEF2F2; border:1.5px solid #FCA5A5; color:#991B1B; border-radius:var(–radius-sm); padding:10px 14px; font-size:13px; margin-bottom:14px; display:none; }
+.auth-divider::before, .auth-divider::after { content:’’; flex:1; height:1px; background:#CCCAC5; }
+.auth-error { background:#FEF2F2; border:1.5px solid #FCA5A5; color:#991B1B; border-radius:2px; padding:10px 14px; font-size:13px; margin-bottom:14px; display:none; }
 
 /* ─────────────────────────────────────────
 APP SHELL
@@ -75,7 +46,7 @@ min-height: 100vh;
 }
 
 .topbar {
-background: var(–surface);
+background: #FDFCFB;
 padding: 0 20px;
 height: 56px;
 display: flex;
@@ -84,13 +55,13 @@ gap: 12px;
 position: sticky;
 top: 0;
 z-index: 100;
-border-bottom: 1px solid var(–line);
+border-bottom: 1px solid #E4E2DE;
 flex-shrink: 0;
 }
-.topbar-logo { font-family:var(–serif); font-size:1.45rem; font-weight:400; flex:1; color:var(–ink); letter-spacing:0.02em; white-space:nowrap; }
-.topbar-logo span { color:var(–gold); }
-.icon-btn { background:none; border:none; color:var(–ink-2); cursor:pointer; padding:10px; line-height:1; transition:color 0.15s; display:flex; align-items:center; min-width:44px; min-height:44px; justify-content:center; }
-.icon-btn:hover { color:var(–ink); }
+.topbar-logo { font-family:Georgia,serif; font-size:1.45rem; font-weight:400; flex:1; color:#1C1B18; letter-spacing:0.02em; white-space:nowrap; }
+.topbar-logo span { color:#4A6670; }
+.icon-btn { background:none; border:none; color:#6A6862; cursor:pointer; padding:10px; line-height:1; transition:color 0.15s; display:flex; align-items:center; min-width:44px; min-height:44px; justify-content:center; }
+.icon-btn:hover { color:#1C1B18; }
 
 /* App body: sidebar + content side by side on tablet, stacked on phone */
 .app-body {
@@ -112,17 +83,17 @@ BOTTOM NAV (mobile only)
 ───────────────────────────────────────── */
 .bottom-nav {
 position: fixed; bottom: 0; left: 0; right: 0;
-background: var(–surface); border-top: 1px solid var(–line);
+background: #FDFCFB; border-top: 1px solid #E4E2DE;
 display: flex; z-index: 100;
 padding-bottom: env(safe-area-inset-bottom);
 }
 .nav-item {
 flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-padding: 10px 4px 8px; cursor: pointer; color: var(–ink-3); font-size: 9.5px;
+padding: 10px 4px 8px; cursor: pointer; color: #A8A5A0; font-size: 9.5px;
 font-weight: 400; border: none; background: none; transition: color 0.18s;
 letter-spacing: 0.06em; text-transform: uppercase; min-height: 54px;
 }
-.nav-item.active { color: var(–ink); }
+.nav-item.active { color: #1C1B18; }
 .nav-item.active .nav-icon svg { stroke-width: 2; }
 .nav-item .nav-icon { display: flex; align-items: center; justify-content: center; }
 
@@ -141,15 +112,15 @@ overflow-x: hidden;
 /* ─────────────────────────────────────────
 PAGE HEADERS
 ───────────────────────────────────────── */
-.page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; padding-bottom:14px; border-bottom:1px solid var(–line); }
-.page-title { font-family:var(–serif); font-size:1.65rem; font-weight:400; color:var(–ink); letter-spacing:0.01em; }
+.page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; padding-bottom:14px; border-bottom:1px solid #E4E2DE; }
+.page-title { font-family:Georgia,serif; font-size:1.65rem; font-weight:400; color:#1C1B18; letter-spacing:0.01em; }
 
 /* ─────────────────────────────────────────
 CARDS
 ───────────────────────────────────────── */
-.card { background:var(–surface); padding:18px; margin-bottom:12px; border:1px solid var(–line); }
+.card { background:#FDFCFB; padding:18px; margin-bottom:12px; border:1px solid #E4E2DE; }
 .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
-.card-title { font-family:var(–serif); font-size:1.05rem; font-weight:400; color:var(–ink); }
+.card-title { font-family:Georgia,serif; font-size:1.05rem; font-weight:400; color:#1C1B18; }
 
 /* ═════════════════════════════════════════
 TABLET  768px+  — sidebar visible
@@ -167,8 +138,8 @@ display: flex;
 flex-direction: column;
 width: 200px;
 flex-shrink: 0;
-background: var(–surface);
-border-right: 1px solid var(–line);
+background: #FDFCFB;
+border-right: 1px solid #E4E2DE;
 padding: 24px 0;
 position: sticky;
 top: 60px;
@@ -186,28 +157,28 @@ font-size: 11px;
 letter-spacing: 0.07em;
 text-transform: uppercase;
 min-height: unset;
-color: var(–ink-3) !important;
+color: #A8A5A0 !important;
 width: 100%;
 border: none;
 background: none;
 cursor: pointer;
 transition: color 0.15s, background 0.15s;
-font-family: var(–sans);
+font-family: ‘Outfit’, -apple-system, sans-serif;
 font-weight: 400;
 text-decoration: none;
 -webkit-appearance: none;
 }
-.side-nav .nav-item svg { stroke: var(–ink-3) !important; }
-.side-nav .nav-item span { display: inline !important; color: inherit !important; }
+.side-nav .nav-item svg { stroke: #A8A5A0 !important; }
+.side-nav .nav-item span { display: inline !important; color: currentColor; }
 .side-nav .nav-item.active {
-color: var(–ink) !important;
-background: var(–mist);
-border-left: 3px solid var(–gold);
+color: #1C1B18 !important;
+background: #F2F1EF;
+border-left: 3px solid #4A6670;
 padding-left: 21px;
 }
-.side-nav .nav-item.active svg { stroke: var(–ink) !important; }
-.side-nav .nav-item:hover { color: var(–ink) !important; background: var(–mist); }
-.side-nav .nav-item:hover svg { stroke: var(–ink) !important; }
+.side-nav .nav-item.active svg { stroke: #1C1B18 !important; }
+.side-nav .nav-item:hover { color: #1C1B18 !important; background: #F2F1EF; }
+.side-nav .nav-item:hover svg { stroke: #1C1B18 !important; }
 
 .page { padding: 32px 36px 60px; }
 .page-header { margin-bottom: 28px; padding-bottom: 18px; }
@@ -237,7 +208,7 @@ DESKTOP  1024px+
 .form-label { display:block; font-size:10.5px; font-weight:400; color:#A8A5A0; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
 input,select,textarea {
 width:100%; padding:11px 0; border:none; border-bottom:1px solid #E4E2DE;
-border-radius:0; font-family:var(–sans); font-size:15px; background:transparent;
+border-radius:0; font-family:-apple-system,sans-serif; font-size:15px; background:transparent;
 color:#1C1B18; transition:border-color 0.2s; appearance:none; -webkit-appearance:none;
 font-weight:400;
 }
@@ -253,70 +224,70 @@ border-bottom-color: #E4E2DE !important;
 select { background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%23A8A5A0’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”); background-repeat:no-repeat; background-position:right 4px center; padding-right:24px; }
 
 /* BUTTONS */
-.btn { display:inline-flex; align-items:center; gap:6px; padding:clamp(10px,1.5vw,13px) clamp(16px,2.5vw,24px); border-radius:0; border:none; cursor:pointer; font-family:var(–sans); font-size:clamp(11.5px,1.2vw,13px); font-weight:400; transition:all 0.18s; letter-spacing:0.08em; text-transform:uppercase; }
-.btn-primary { background:var(–ink); color:white; }
+.btn { display:inline-flex; align-items:center; gap:6px; padding:clamp(10px,1.5vw,13px) clamp(16px,2.5vw,24px); border-radius:0; border:none; cursor:pointer; font-family:-apple-system,sans-serif; font-size:clamp(11.5px,1.2vw,13px); font-weight:400; transition:all 0.18s; letter-spacing:0.08em; text-transform:uppercase; }
+.btn-primary { background:#1C1B18 !important; color:#FFFFFF !important; }
 .btn-primary:hover { background:#2A2926; }
-.btn-coral { background:var(–danger); color:white; }
+.btn-coral { background:#7A4040; color: #FFFFFF; }
 .btn-coral:hover { background:#7A3030; }
-.btn-ghost { background:transparent; color:var(–ink); border:1px solid var(–line-2); }
-.btn-ghost:hover { border-color:var(–ink); background:var(–mist); }
-.btn-sm { padding:7px 14px; font-size:11px; }
+.btn-ghost { background:transparent; color:#1C1B18; border:1px solid #CCCAC5; }
+.btn-ghost:hover { border-color:#1C1B18; background:#F2F1EF; }
+.btn-sm { padding:8px 16px; font-size:11px; }
 .btn-block { width:100%; justify-content:center; }
 
 /* CHIPS — pill style for filters, square for selections */
 .chips { display:flex; flex-wrap:wrap; gap:6px; }
 .chip {
 padding:clamp(7px,1vw,9px) clamp(12px,1.5vw,16px); border-radius:0; font-size:clamp(11.5px,1.2vw,13px); font-weight:400;
-cursor:pointer; border:1px solid var(–line-2); transition:all 0.15s;
-background:var(–surface); color:var(–ink); user-select:none;
+cursor:pointer; border:1px solid #CCCAC5; transition:all 0.15s;
+background:#FDFCFB; color:#1C1B18; user-select:none;
 letter-spacing:0.03em;
 }
-.chip:hover { border-color:var(–ink); color:var(–ink); }
-.chip.active { background:var(–ink); color:white; border-color:var(–ink); }
-.chip.dog-chip { background:var(–gold-pale); color:var(–gold); border-color:#A8BEC4; }
-.chip.dog-chip.active { background:var(–gold); color:white; border-color:var(–gold); }
+.chip:hover { border-color:#1C1B18; color:#1C1B18; }
+.chip.active { background:#1C1B18; color: #FFFFFF; border-color:#1C1B18; }
+.chip.dog-chip { background:#EBF0F2; color:#4A6670; border-color:#A8BEC4; }
+.chip.dog-chip.active { background:#4A6670; color: #FFFFFF; border-color:#4A6670; }
 
 /* TRIP CARDS */
 .trip-card {
-background:var(–surface); overflow:hidden; margin-bottom:12px;
-border:1px solid var(–line); cursor:pointer; transition:border-color 0.2s;
+background:#FDFCFB; overflow:hidden; margin-bottom:12px;
+border:1px solid #E4E2DE; cursor:pointer; transition:border-color 0.2s;
 }
-.trip-card:hover { border-color:var(–ink); }
+.trip-card:hover { border-color:#1C1B18; }
 .trip-card-header { background:#1C1B18 !important; padding:20px; color:#FFFFFF !important; position:relative; }
 .trip-card-header::before { content:’’; position:absolute; top:0; left:0; right:0; height:2px; background:rgba(255,255,255,0.25); }
-.trip-dest { font-family:var(–serif); font-size:1.4rem; font-weight:400; letter-spacing:0.02em; color:#FFFFFF !important; display:block; }
+.trip-dest { font-family:Georgia,serif; font-size:1.4rem; font-weight:400; letter-spacing:0.02em; color:#FFFFFF !important; display:block; }
 .trip-meta { font-size:11.5px; color:rgba(255,255,255,0.65) !important; margin-top:6px; font-weight:300; letter-spacing:0.04em; display:block; }
 .trip-card-body { padding:14px 20px; }
 .trip-badges { display:flex; flex-wrap:wrap; gap:5px; }
-.badge { font-size:10.5px; padding:3px 9px; font-weight:400; background:var(–mist); color:var(–ink-2); letter-spacing:0.03em; }
-.badge-ocean { background:var(–mist); color:var(–ink); }
-.badge-sage { background:var(–mist); color:var(–ink-2); }
-.badge-coral { background:var(–danger-pale); color:var(–danger); }
-.badge-gold { background:var(–gold-pale); color:var(–gold); }
+.badge { font-size:10.5px; padding:3px 9px; font-weight:400; background:#F2F1EF; color:#6A6862; letter-spacing:0.03em; }
+.badge-ocean { background:#F2F1EF; color:#1C1B18; }
+.badge-sage { background:#F2F1EF; color:#6A6862; }
+.badge-coral { background:#F2EDED; color:#7A4040; }
+.badge-gold { background:#EBF0F2; color:#4A6670; }
 
 /* PACK LIST */
 .category-section { margin-bottom:20px; }
 .category-header {
 display:flex; align-items:center; gap:10px; padding:9px 0;
-cursor:pointer; border-bottom:1px solid var(–line);
+cursor:pointer; border-bottom:1px solid #E4E2DE;
 background:transparent;
 }
-.category-title { font-family:var(–serif); font-size:1rem; font-weight:400; flex:1; color:var(–ink); letter-spacing:0.02em; }
-.category-count { font-size:11px; color:var(–ink-2); letter-spacing:0.04em; font-weight:400; }
-.category-body { border-bottom:1px solid var(–line); overflow:hidden; }
+.category-title { font-family:Georgia,serif; font-size:1rem; font-weight:400; flex:1; color:#1C1B18; letter-spacing:0.02em; }
+.category-count { font-size:11px; color:#6A6862; letter-spacing:0.04em; font-weight:400; }
+.category-body { border-bottom:1px solid #E4E2DE; overflow:hidden; }
 .category-body.collapsed { display:none; }
-.pack-item { display:flex; align-items:center; gap:12px; padding:clamp(11px,1.5vw,16px) 0; border-bottom:1px solid var(–line); transition:background 0.12s; }
+.pack-item { display:flex; align-items:center; gap:12px; padding:13px 0; border-bottom:1px solid #E4E2DE; transition:background 0.12s; }
 .pack-item:last-child { border-bottom:none; }
 .pack-item.packed { opacity:1; }
-.pack-item input[type=“checkbox”] { width:16px; height:16px; min-width:16px; accent-color:var(–ink); cursor:pointer; border:none; padding:0; background:none; }
-.pack-item-name { flex:1; font-size:clamp(13.5px,1.5vw,15px); font-weight:400; }
+.pack-item input[type=“checkbox”] { width:17px; height:17px; min-width:17px; accent-color:#1C1B18; cursor:pointer; flex-shrink:0; }
+.pack-item-name { flex:1; font-size:14px; font-weight:400; color:#1C1B18; min-width:0; }
 .pack-item.packed .pack-item-name { text-decoration:line-through; color:#A8A5A0; }
-.pack-item-person { font-size:11px; color:var(–ink-2); background:var(–mist); padding:3px 9px; white-space:nowrap; letter-spacing:0.03em; border:1px solid var(–line-2); font-weight:400; }
+.pack-item-person { font-size:11px; color:#6A6862; background:#F2F1EF; padding:3px 9px; white-space:nowrap; letter-spacing:0.03em; border:1px solid #CCCAC5; font-weight:400; }
 .pack-item-actions { display:flex; gap:2px; }
-.pack-item-actions button { background:none; border:none; cursor:pointer; color:var(–ink-2); padding:4px 5px; transition:color 0.12s; display:flex; align-items:center; }
-.pack-item-actions button:hover { color:var(–ink); }
-.pack-item-actions .essential-btn.is-essential { color:var(–gold); }
-.essential-badge { font-size:10px; background:var(–gold-pale); color:var(–gold); padding:2px 7px; letter-spacing:0.04em; }
+.pack-item-actions button { background:none; border:none; cursor:pointer; color:#6A6862; padding:4px 5px; transition:color 0.12s; display:flex; align-items:center; }
+.pack-item-actions button:hover { color:#1C1B18; }
+.pack-item-actions .essential-btn.is-essential { color:#4A6670; }
+.essential-badge { font-size:10px; background:#EBF0F2; color:#4A6670; padding:2px 7px; letter-spacing:0.04em; }
 
 /* FILTERS */
 .filter-bar { display:flex; gap:5px; overflow-x:auto; padding-bottom:4px; margin-bottom:12px; scrollbar-width:none; }
@@ -325,81 +296,81 @@ background:transparent;
 .person-filter-row::-webkit-scrollbar { display:none; }
 .person-chip {
 display:flex; align-items:center; gap:6px; padding:7px 14px;
-border:1px solid var(–line-2); background:var(–surface); cursor:pointer;
+border:1px solid #CCCAC5; background:#FDFCFB; cursor:pointer;
 white-space:nowrap; transition:all 0.15s; font-size:12px; font-weight:400;
-color:var(–ink); letter-spacing:0.03em;
+color:#1C1B18; letter-spacing:0.03em;
 }
-.person-chip.active { background:var(–ink); color:white; border-color:var(–ink); }
+.person-chip.active { background:#1C1B18; color: #FFFFFF; border-color:#1C1B18; }
 .search-wrap { position:relative; margin-bottom:14px; }
-.search-wrap input { padding-left:28px; border-bottom:1px solid var(–line); }
+.search-wrap input { padding-left:28px; border-bottom:1px solid #E4E2DE; }
 .search-icon { position:absolute; left:0; top:50%; transform:translateY(-50%); color:#A8A5A0; pointer-events:none; display:flex; }
 
 /* MODAL */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(26,25,22,0.6); backdrop-filter:blur(6px); z-index:200; align-items:flex-end; justify-content:center; }
 .modal-overlay.open { display:flex; }
 .modal {
-background:var(–surface); padding:28px 24px;
+background:#FDFCFB; padding:28px 24px;
 width:100%; max-width:600px; max-height:92vh; overflow-y:auto;
 animation:slideUp 0.3s cubic-bezier(0.16,1,0.3,1);
-border-top:2px solid var(–line-2);
+border-top:2px solid #CCCAC5;
 }
 @keyframes slideUp { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
 .modal-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:22px; }
-.modal-title { font-family:var(–serif); font-size:1.4rem; font-weight:400; color:var(–ink); }
+.modal-title { font-family:Georgia,serif; font-size:1.4rem; font-weight:400; color:#1C1B18; }
 .close-btn {
 background:none; border:none; cursor:pointer; color:#A8A5A0;
 padding:4px; display:flex; align-items:center; transition:color 0.15s; flex-shrink:0; margin-top:2px;
 }
-.close-btn:hover { color:var(–ink); }
+.close-btn:hover { color:#1C1B18; }
 @media(min-width:600px) { .modal { border-radius:0; margin:auto; max-width:540px; } .modal-overlay { align-items:center; } }
 @media(min-width:768px) { .modal { padding:36px 32px; } }
 
 /* MISC */
-.avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.95rem; font-weight:400; color:white; flex-shrink:0; letter-spacing:0.02em; }
-.avatar-ocean { background:var(–ink); }
-.avatar-coral { background:var(–danger); }
+.avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.95rem; font-weight:400; color: #FFFFFF; flex-shrink:0; letter-spacing:0.02em; }
+.avatar-ocean { background:#1C1B18; }
+.avatar-coral { background:#7A4040; }
 .avatar-sage { background:#5A6A5A; }
-.avatar-gold { background:var(–gold); }
-.progress-bar { height:2px; background:var(–line); overflow:hidden; margin:10px 0; }
-.progress-fill { height:100%; background:var(–ink); transition:width 0.5s ease; }
+.avatar-gold { background:#4A6670; }
+.progress-bar { height:2px; background:#E4E2DE; overflow:hidden; margin:10px 0; }
+.progress-fill { height:100%; background:#1C1B18; transition:width 0.5s ease; }
 .empty-state { text-align:center; padding:60px 24px; color:#A8A5A0; }
 .empty-icon { width:40px; height:40px; margin:0 auto 16px; opacity:0.35; }
-.empty-title { font-family:var(–serif); font-size:1.2rem; font-weight:400; color:var(–ink-2); margin-bottom:8px; }
-.person-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(–line); }
-.divider { height:1px; background:var(–line); margin:16px 0; }
-.settings-title { font-family:var(–serif); font-size:1.05rem; font-weight:400; color:var(–ink); padding-bottom:12px; border-bottom:1px solid var(–line); margin-bottom:16px; letter-spacing:0.02em; }
-.drop-area { border:1px dashed var(–line-2); padding:32px; text-align:center; cursor:pointer; color:#A8A5A0; transition:border-color 0.18s; }
-.drop-area:hover { border-color:var(–ink); color:var(–ink-2); }
+.empty-title { font-family:Georgia,serif; font-size:1.2rem; font-weight:400; color:#6A6862; margin-bottom:8px; }
+.person-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #E4E2DE; }
+.divider { height:1px; background:#E4E2DE; margin:16px 0; }
+.settings-title { font-family:Georgia,serif; font-size:1.05rem; font-weight:400; color:#1C1B18; padding-bottom:12px; border-bottom:1px solid #E4E2DE; margin-bottom:16px; letter-spacing:0.02em; }
+.drop-area { border:1px dashed #CCCAC5; padding:32px; text-align:center; cursor:pointer; color:#A8A5A0; transition:border-color 0.18s; }
+.drop-area:hover { border-color:#1C1B18; color:#6A6862; }
 .drop-area-icon { width:36px; height:36px; margin:0 auto 10px; opacity:0.4; }
-.config-notice { background:var(–gold-pale); border-left:3px solid var(–gold); padding:12px 14px; font-size:12.5px; color:var(–gold); margin-bottom:16px; }
+.config-notice { background:#EBF0F2; border-left:3px solid #4A6670; padding:12px 14px; font-size:12.5px; color:#4A6670; margin-bottom:16px; }
 .wave-dots { display:flex; gap:8px; }
-.wave-dot { width:7px; height:7px; border-radius:50%; background:var(–ink); animation:waveDot 1.2s ease-in-out infinite; }
+.wave-dot { width:7px; height:7px; border-radius:50%; background:#1C1B18; animation:waveDot 1.2s ease-in-out infinite; }
 .wave-dot:nth-child(2){animation-delay:0.2s} .wave-dot:nth-child(3){animation-delay:0.4s}
 @keyframes waveDot { 0%,80%,100%{transform:scale(1);opacity:0.3} 40%{transform:scale(1.4);opacity:1} }
-#toast { position:fixed; bottom:max(90px, calc(env(safe-area-inset-bottom) + 80px)); left:50%; transform:translateX(-50%) translateY(12px); background:var(–ink); color:white; padding:10px 22px; font-size:12px; font-weight:400; z-index:500; opacity:0; transition:all 0.22s cubic-bezier(0.16,1,0.3,1); pointer-events:none; white-space:nowrap; letter-spacing:0.06em; text-transform:uppercase; }
+#toast { position:fixed; bottom:max(90px, calc(env(safe-area-inset-bottom) + 80px)); left:50%; transform:translateX(-50%) translateY(12px); background:#1C1B18; color: #FFFFFF; padding:10px 22px; font-size:12px; font-weight:400; z-index:500; opacity:0; transition:all 0.22s cubic-bezier(0.16,1,0.3,1); pointer-events:none; white-space:nowrap; letter-spacing:0.06em; text-transform:uppercase; }
 #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
 /* Category inline add button */
 .cat-add-btn {
 background: none; border: none; cursor: pointer;
-color: var(–ink-3); padding: 3px 6px;
+color: #A8A5A0; padding: 3px 6px;
 display: inline-flex; align-items: center;
 transition: color 0.15s; border-radius: 0;
 margin-right: 4px;
 }
-.cat-add-btn:hover { color: var(–ink); }
-.cat-chevron { font-size: 11px; color: var(–ink-3); }
+.cat-add-btn:hover { color: #1C1B18; }
+.cat-chevron { font-size: 11px; color: #A8A5A0; }
 
 /* Mode toggle active state */
 #new-item-mode-single.active,
 #new-item-mode-bulk.active {
-background: var(–ink);
-color: white;
+background: #1C1B18;
+color: #FFFFFF;
 }
 #new-item-mode-single:not(.active),
 #new-item-mode-bulk:not(.active) {
 background: transparent;
-color: var(–ink-2);
+color: #6A6862;
 }
 </style>
 
@@ -425,12 +396,12 @@ color: var(–ink-2);
     <input type="password" id="auth-password" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" autocomplete="current-password">
   </div>
   <div style="text-align:right;margin-top:-8px;margin-bottom:16px">
-    <a href="#" onclick="showForgotPassword()" style="font-size:12.5px;color:var(--ink-2);">Wachtwoord vergeten?</a>
+    <a href="#" onclick="showForgotPassword()" style="font-size:12.5px;color:#6A6862;">Wachtwoord vergeten?</a>
   </div>
   <div class="auth-error" id="login-error"></div>
   <button class="btn btn-primary btn-block" onclick="doLogin()">Inloggen</button>
-  <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
-    Nog geen account? <a href="#" onclick="showRegister()" style="color:var(--accent);font-weight:600">Registreer gratis</a>
+  <div style="text-align:center;margin-top:16px;font-size:13px;color:#6A6862">
+    Nog geen account? <a href="#" onclick="showRegister()" style="color:#4A6670;font-weight:600">Registreer gratis</a>
   </div>
   <div class="auth-divider">of</div>
   <button class="btn btn-ghost btn-block btn-sm" onclick="demoMode()">Probeer demo (geen account)</button>
@@ -448,21 +419,21 @@ color: var(–ink-2);
   </div>
   <div class="auth-error" id="register-error"></div>
   <button class="btn btn-primary btn-block" onclick="doRegister()">Account aanmaken</button>
-  <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
-    Al een account? <a href="#" onclick="showLogin()" style="color:var(--accent);font-weight:600">Inloggen</a>
+  <div style="text-align:center;margin-top:16px;font-size:13px;color:#6A6862">
+    Al een account? <a href="#" onclick="showLogin()" style="color:#4A6670;font-weight:600">Inloggen</a>
   </div>
 </div>
 
 <!-- Forgot password -->
 <div id="auth-forgot" style="display:none">
-  <div style="font-size:14px;color:var(--ink-2);margin-bottom:16px">Vul je e-mailadres in en we sturen je een resetlink.</div>
+  <div style="font-size:14px;color:#6A6862;margin-bottom:16px">Vul je e-mailadres in en we sturen je een resetlink.</div>
   <div class="form-group">
     <label class="form-label">E-mailadres</label>
     <input type="email" id="forgot-email" placeholder="jij@voorbeeld.nl" autocomplete="email">
   </div>
   <button class="btn btn-primary btn-block" onclick="doForgotPassword()">Resetlink versturen</button>
-  <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--ink-2)">
-    <a href="#" onclick="showLogin()" style="color:var(--accent);font-weight:600">Terug naar inloggen</a>
+  <div style="text-align:center;margin-top:16px;font-size:13px;color:#6A6862">
+    <a href="#" onclick="showLogin()" style="color:#4A6670;font-weight:600">Terug naar inloggen</a>
   </div>
 </div>
 ```
@@ -474,7 +445,7 @@ color: var(–ink-2);
 
 <div id="app" style="display:none;flex-direction:column;min-height:100vh">
   <div class="topbar" style="display:flex;align-items:center;gap:12px;padding:0 20px;height:56px;background:#FDFCFB;border-bottom:1px solid #E4E2DE;position:sticky;top:0;z-index:100;flex-shrink:0">
-    <div class="topbar-logo" style="flex:1;font-family:'Libre Baskerville',serif;font-size:1.45rem;color:#1C1B18;letter-spacing:0.02em">Pack<span style="color:var(--gold)">Mate</span></div>
+    <div class="topbar-logo" style="flex:1;font-family:Georgia,serif;font-size:1.45rem;color:#1C1B18;letter-spacing:0.02em">Pack<span style="color:#4A6670">Mate</span></div>
     <button onclick="doLogout()" title="Uitloggen" style="background:none;border:none;cursor:pointer;color:#6A6862;display:flex;align-items:center;padding:8px;min-width:44px;min-height:44px;justify-content:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
   </div>
 
@@ -536,7 +507,7 @@ color: var(–ink-2);
         <button class="btn btn-coral btn-sm" onclick="openLibraryItem()"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Item</button>
       </div>
     </div>
-    <div style="font-size:13px;color:var(--ink-2);margin-bottom:12px">Items worden automatisch toegevoegd op basis van vervoer, accommodatie of activiteiten.</div>
+    <div style="font-size:13px;color:#6A6862;margin-bottom:12px">Items worden automatisch toegevoegd op basis van vervoer, accommodatie of activiteiten.</div>
 
 ```
 <div class="filter-bar" id="essentials-filter-bar">
@@ -580,7 +551,7 @@ color: var(–ink-2);
       <div class="avatar avatar-ocean" id="account-avatar" style="width:44px;height:44px;font-size:1.1rem;flex-shrink:0"></div>
       <div>
         <div style="font-weight:600;font-size:15px" id="account-email-display"></div>
-        <div style="font-size:12px;color:var(--ink-2)" id="account-type-display"></div>
+        <div style="font-size:12px;color:#6A6862" id="account-type-display"></div>
       </div>
     </div>
   </div>
@@ -684,7 +655,7 @@ color: var(–ink-2);
     <div class="form-group" id="member-birthyear-group" style="display:none">
       <label class="form-label">Geboortejaar</label>
       <input type="number" id="member-birthyear" placeholder="bijv. 2018" min="2000" max="2025" oninput="updateAgePreview()">
-      <div id="age-preview" style="font-size:12px;color:var(--ink-2);margin-top:4px"></div>
+      <div id="age-preview" style="font-size:12px;color:#6A6862;margin-top:4px"></div>
     </div>
     <button class="btn btn-primary btn-block" id="member-save-btn" onclick="saveMember()"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span> <span id="member-save-label">Toevoegen</span></button>
   </div>
@@ -699,9 +670,9 @@ color: var(–ink-2);
 
 ```
 <!-- Mode toggle: single / bulk -->
-<div style="display:flex;gap:0;margin-bottom:18px;border:1px solid var(--line-2)">
+<div style="display:flex;gap:0;margin-bottom:18px;border:1px solid #CCCAC5">
   <button id="new-item-mode-single" onclick="switchItemMode('single')"
-    class="btn btn-sm active" style="flex:1;justify-content:center;border:none;border-right:1px solid var(--line-2);">
+    class="btn btn-sm active" style="flex:1;justify-content:center;border:none;border-right:1px solid #CCCAC5;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="width:13px;height:13px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     Enkel item
   </button>
@@ -722,7 +693,7 @@ color: var(–ink-2);
   <div class="form-group">
     <label class="form-label">Namen — één per regel</label>
     <textarea id="new-item-bulk" rows="5" placeholder="Zonnebrand SPF50&#10;Zonnebril&#10;Strandlaken&#10;Zwembroek"
-      style="width:100%;border:none;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:14px;background:transparent;color:var(--ink);resize:vertical;padding:8px 0;outline:none;font-weight:400;line-height:1.6"></textarea>
+      style="width:100%;border:none;border-bottom:1px solid #E4E2DE;font-family:-apple-system,sans-serif;font-size:14px;background:transparent;color:#1C1B18;resize:vertical;padding:8px 0;outline:none;font-weight:400;line-height:1.6"></textarea>
     <div style="font-size:11.5px;color:#A8A5A0;margin-top:5px">Alle items krijgen dezelfde categorie en deelnemers.</div>
   </div>
 </div>
@@ -768,9 +739,9 @@ color: var(–ink-2);
 
 ```
 <!-- Mode toggle (hidden when editing) -->
-<div id="lib-item-mode-toggle" style="display:flex;gap:0;margin-bottom:18px;border:1px solid var(--line-2)">
+<div id="lib-item-mode-toggle" style="display:flex;gap:0;margin-bottom:18px;border:1px solid #CCCAC5">
   <button id="lib-item-mode-single" onclick="switchLibItemMode('single')"
-    class="btn btn-sm active" style="flex:1;justify-content:center;border:none;border-right:1px solid var(--line-2);">
+    class="btn btn-sm active" style="flex:1;justify-content:center;border:none;border-right:1px solid #CCCAC5;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="width:13px;height:13px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     Enkel item
   </button>
@@ -791,7 +762,7 @@ color: var(–ink-2);
   <div class="form-group">
     <label class="form-label">Namen — één per regel</label>
     <textarea id="lib-item-bulk" rows="5" placeholder="Skischoenen&#10;Skihelm&#10;Skipassen&#10;Handschoenen"
-      style="width:100%;border:none;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:14px;background:transparent;color:var(--ink);resize:vertical;padding:8px 0;outline:none;font-weight:400;line-height:1.6"></textarea>
+      style="width:100%;border:none;border-bottom:1px solid #E4E2DE;font-family:-apple-system,sans-serif;font-size:14px;background:transparent;color:#1C1B18;resize:vertical;padding:8px 0;outline:none;font-weight:400;line-height:1.6"></textarea>
     <div style="font-size:11.5px;color:#A8A5A0;margin-top:5px">Alle items krijgen dezelfde categorie, deelnemers en trigger.</div>
   </div>
 </div>
@@ -853,13 +824,13 @@ color: var(–ink-2);
 <div class="modal-overlay" id="modal-trip-options">
   <div class="modal">
     <div class="modal-header"><div class="modal-title">Reis opties</div><button class="close-btn" onclick="closeModal('modal-trip-options')" style="display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-    <div id="trip-options-dest" style="font-weight:600;font-size:1rem;color:var(--ink);margin-bottom:14px"></div>
+    <div id="trip-options-dest" style="font-weight:600;font-size:1rem;color:#1C1B18;margin-bottom:14px"></div>
     <div id="trip-options-main" style="display:flex;flex-direction:column;gap:10px">
       <button class="btn btn-ghost btn-block" onclick="duplicateTrip(activeTrip)"><span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></span> Dupliceren</button>
       <button class="btn btn-coral btn-block" onclick="showTripDeleteConfirm()"><span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6m4-6v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></span> Reis verwijderen</button>
     </div>
     <div id="trip-options-confirm" style="display:none">
-      <div style="background:var(--danger-pale);border-radius:var(--radius-sm);padding:12px;margin-bottom:14px;font-size:14px;color:var(--danger)">Weet je zeker dat je deze reis wilt verwijderen? Dit kan niet ongedaan worden gemaakt.</div>
+      <div style="background:#F2EDED;border-radius:2px;padding:12px;margin-bottom:14px;font-size:14px;color:#7A4040">Weet je zeker dat je deze reis wilt verwijderen? Dit kan niet ongedaan worden gemaakt.</div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-ghost" style="flex:1" onclick="hideTripDeleteConfirm()"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> Annuleren</button>
         <button class="btn btn-coral" style="flex:1" onclick="deleteTrip()"><span style="width:14px;height:14px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6m4-6v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></span> Verwijderen</button>
@@ -1444,11 +1415,11 @@ function renderTrips() {
   const regular = db.trips.filter(function(t){ return !t.isTemplate; });
   let html = '';
   if (templates.length > 0) {
-    html += '<div style="font-family:var(--font-serif);font-size:1rem;color:var(--ink-2);margin-bottom:8px">Templates</div>';
+    html += '<div style="font-size:1rem;color:#6A6862;margin-bottom:8px">Templates</div>';
     templates.forEach(function(t){ html += tripCardHTML(t); });
   }
   if (regular.length > 0) {
-    if (templates.length > 0) html += '<div style="font-family:var(--font-serif);font-size:1rem;color:var(--ink-2);margin:12px 0 8px">Reizen</div>';
+    if (templates.length > 0) html += '<div style="font-size:1rem;color:#6A6862;margin:12px 0 8px">Reizen</div>';
     regular.forEach(function(t){ html += tripCardHTML(t); });
   }
   container.innerHTML = html;
@@ -1465,8 +1436,8 @@ function tripCardHTML(trip) {
   const pct = total > 0 ? Math.round(packed/total*100) : 0;
   const tid = trip.id;
   return '<div class="trip-card" onclick="openTripById(\'' + tid + '\')">'
-    + '<div class="trip-card-header"><div class="trip-dest">' + esc(trip.destination) + '</div>'
-    + '<div class="trip-meta">' + from + (to ? ' – ' + to : '') + ' • ' + (trans||'Vervoer n.v.t.') + '</div></div>'
+    + '<div class="trip-card-header" style="background:#1C1B18;color:#ffffff;padding:20px"><div class="trip-dest" style="color:#ffffff;font-family:Georgia,serif;font-size:1.35rem;display:block">' + esc(trip.destination) + '</div>'
+    + '<div class="trip-meta" style="color:rgba(255,255,255,0.7);font-size:11.5px;margin-top:6px">' + from + (to ? ' – ' + to : '') + ' • ' + (trans||'Vervoer n.v.t.') + '</div></div>'
     + '<div class="trip-card-body"><div class="trip-badges">'
     + (trip.accommodation ? '<span class="badge badge-ocean">' + accommodationLabel(trip.accommodation) + '</span>' : '')
     + (acts ? '<span class="badge badge-sage">' + acts + '</span>' : '')
@@ -1604,9 +1575,9 @@ function renderTripHeader() {
   const total = items.length;
   const pct = total > 0 ? Math.round(packed/total*100) : 0;
   el.innerHTML = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'
-    + '<div style="flex:1"><div style="font-family:var(--font-serif);font-size:1.4rem;color:var(--ink)">' + esc(activeTrip.destination) + '</div>'
-    + '<div style="font-size:12px;color:var(--ink-2)">'+(activeTrip.dateFrom?formatDate(activeTrip.dateFrom):'')+(activeTrip.dateTo?' → '+formatDate(activeTrip.dateTo):'')+'</div></div>'
-    + '<div style="text-align:right"><div style="font-family:var(--font-serif);font-size:1.1rem;color:var(--ink)">'+pct+'%</div><div style="font-size:11px;color:var(--ink-2)">'+packed+'/'+total+'</div></div>'
+    + '<div style="flex:1"><div style="font-family:Georgia,serif;font-size:1.4rem;color:#1C1B18">' + esc(activeTrip.destination) + '</div>'
+    + '<div style="font-size:12px;color:#6A6862">'+(activeTrip.dateFrom?formatDate(activeTrip.dateFrom):'')+(activeTrip.dateTo?' → '+formatDate(activeTrip.dateTo):'')+'</div></div>'
+    + '<div style="text-align:right"><div style="font-family:Georgia,serif;font-size:1.1rem;color:#1C1B18">'+pct+'%</div><div style="font-size:11px;color:#6A6862">'+packed+'/'+total+'</div></div>'
     + '<button class="btn btn-ghost btn-sm" onclick="openTripOptions()">···</button></div>'
     + '<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%"></div></div>';
   // Person filter
@@ -1697,9 +1668,9 @@ function itemHTML(item) {
   const isGroup = item.isGroup || !item.persons || item.persons.length === 0;
   let personLabel;
   if (item.dogId) {
-    personLabel = '<div class="pack-item-person" style="background:var(--gold-pale);color:var(--gold);display:inline-flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="5"/><path d="M7 10 C5 7 6 4 9 5" stroke-linecap="round"/><path d="M17 10 C19 7 18 4 15 5" stroke-linecap="round"/><circle cx="10.5" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="13.5" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="12" cy="14.5" r="0.6" fill="currentColor" stroke="none"/></svg></span>'+esc(item.dogName||'Hond')+'</div>';
+    personLabel = '<div class="pack-item-person" style="background:#EBF0F2;color:#4A6670;display:inline-flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="5"/><path d="M7 10 C5 7 6 4 9 5" stroke-linecap="round"/><path d="M17 10 C19 7 18 4 15 5" stroke-linecap="round"/><circle cx="10.5" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="13.5" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="12" cy="14.5" r="0.6" fill="currentColor" stroke="none"/></svg></span>'+esc(item.dogName||'Hond')+'</div>';
   } else if (isGroup) {
-    personLabel = '<div class="pack-item-person" style="background:var(--mist);color:var(--ink)"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span> Groep</div>';
+    personLabel = '<div class="pack-item-person" style="background:#F2F1EF;color:#1C1B18"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span> Groep</div>';
   } else {
     const names = item.persons.map(function(pid){
       const m = db.members.find(function(m){ return m.id===pid; });
@@ -1950,9 +1921,9 @@ function populateCategoriesManageList() {
   const div = document.getElementById('categories-manage-list');
   if (!div) return;
   div.innerHTML = db.categories.map(function(cat, i){
-    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">'
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #E4E2DE">'
       + '<span>'+esc(cat)+'</span>'
-      + '<button style="color:var(--danger);background:none;border:none;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:4px" onclick="deleteCategory('+i+')"><span style="width:12px;height:12px;display:inline-flex;align-items:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6m4-6v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></span> Verwijder</button></div>';
+      + '<button style="color:#7A4040;background:none;border:none;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:4px" onclick="deleteCategory('+i+')"><span style="width:12px;height:12px;display:inline-flex;align-items:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6m4-6v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></span> Verwijder</button></div>';
   }).join('');
 }
 function saveCategory() {
@@ -1996,14 +1967,14 @@ function memberEmoji(m) {
 function renderMembers() {
   const div = document.getElementById('members-list');
   if (!div) return;
-  if (db.members.length===0) { div.innerHTML='<div style="color:var(--ink-2);font-size:14px;padding:8px 0">Nog geen gezinsleden</div>'; return; }
+  if (db.members.length===0) { div.innerHTML='<div style="color:#6A6862;font-size:14px;padding:8px 0">Nog geen gezinsleden</div>'; return; }
   div.innerHTML = db.members.map(function(m, i){
     return '<div class="person-row">'
       + '<div class="avatar avatar-'+['ocean','coral','sage','gold'][i%4]+'">'+m.name[0]+'</div>'
       + '<div style="flex:1"><div style="font-weight:600">'+esc(m.name)+'</div>'
-      + '<div style="font-size:12px;color:var(--ink-2)">'+memberAgeLabel(m)+'</div></div>'
-      + '<button class="icon-btn" data-edit-id="'+m.id+'" title="Aanpassen" style="color:var(--ink-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
-      + '<button class="icon-btn" data-member-id="'+m.id+'" title="Verwijderen" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
+      + '<div style="font-size:12px;color:#6A6862">'+memberAgeLabel(m)+'</div></div>'
+      + '<button class="icon-btn" data-edit-id="'+m.id+'" title="Aanpassen" style="color:#6A6862"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+      + '<button class="icon-btn" data-member-id="'+m.id+'" title="Verwijderen" style="color:#7A4040"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
   }).join('');
   div.onclick = function(ev) {
     var del = ev.target.closest('[data-member-id]');
@@ -2077,17 +2048,17 @@ function renderDogs() {
   var div = document.getElementById('dogs-list');
   if (!div) return;
   if (!db.dogs || db.dogs.length === 0) {
-    div.innerHTML = '<div style="color:var(--ink-2);font-size:14px;padding:8px 0">Nog geen honden toegevoegd</div>';
+    div.innerHTML = '<div style="color:#6A6862;font-size:14px;padding:8px 0">Nog geen honden toegevoegd</div>';
     return;
   }
   div.innerHTML = db.dogs.map(function(d) {
     return '<div class="person-row">'
-      + '<div class="avatar" style="background:var(--gold);display:flex;align-items:center;justify-content:center;"><span style="width:18px;height:18px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="5"/><path d="M7 10 C5 7 6 4 9 5" stroke-linecap="round"/><path d="M17 10 C19 7 18 4 15 5" stroke-linecap="round"/><circle cx="10.5" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="13.5" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="12" cy="14.5" r="0.6" fill="currentColor" stroke="none"/></svg></span></div>'
+      + '<div class="avatar" style="background:#4A6670;display:flex;align-items:center;justify-content:center;"><span style="width:18px;height:18px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="5"/><path d="M7 10 C5 7 6 4 9 5" stroke-linecap="round"/><path d="M17 10 C19 7 18 4 15 5" stroke-linecap="round"/><circle cx="10.5" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="13.5" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="12" cy="14.5" r="0.6" fill="currentColor" stroke="none"/></svg></span></div>'
       + '<div style="flex:1"><div style="font-weight:600">' + esc(d.name) + '</div>'
-      + (d.breed ? '<div style="font-size:12px;color:var(--ink-2)">' + esc(d.breed) + '</div>' : '')
+      + (d.breed ? '<div style="font-size:12px;color:#6A6862">' + esc(d.breed) + '</div>' : '')
       + '</div>'
-      + '<button class="icon-btn" data-dog-edit="' + d.id + '" title="Aanpassen" style="color:var(--ink-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
-      + '<button class="icon-btn" data-dog-del="' + d.id + '" title="Verwijderen" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
+      + '<button class="icon-btn" data-dog-edit="' + d.id + '" title="Aanpassen" style="color:#6A6862"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+      + '<button class="icon-btn" data-dog-del="' + d.id + '" title="Verwijderen" style="color:#7A4040"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
       + '</div>';
   }).join('');
   div.onclick = function(ev) {
@@ -2113,15 +2084,15 @@ function renderDogProfiles() {
       + '<button class="btn btn-ghost btn-sm" data-dog="' + d.id + '" onclick="openAddDogItem(this.dataset.dog)"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Item</button>'
       + '</div>';
     if (items.length === 0) {
-      html += '<div style="color:var(--ink-2);font-size:13px;padding:4px 0">Nog geen items — voeg spullen toe die je altijd voor ' + esc(d.name) + ' inpakt.</div>';
+      html += '<div style="color:#6A6862;font-size:13px;padding:4px 0">Nog geen items — voeg spullen toe die je altijd voor ' + esc(d.name) + ' inpakt.</div>';
     } else {
-      html += '<div style="font-size:12px;color:var(--ink-2);margin-bottom:8px">' + packed + '/' + items.length + ' ingepakt</div>';
+      html += '<div style="font-size:12px;color:#6A6862;margin-bottom:8px">' + packed + '/' + items.length + ' ingepakt</div>';
       items.forEach(function(item) {
-        html += '<div class="pack-item' + (item.packed ? ' packed' : '') + '" style="padding:8px 0;border-bottom:1px solid var(--border)">'
-          + '<input type="checkbox"' + (item.packed ? ' checked' : '') + ' data-dog="' + d.id + '" data-item="' + item.id + '" onchange="toggleDogItemPacked(this.dataset.dog,this.dataset.item,this.checked)" style="width:18px;height:18px;min-width:18px;accent-color:var(--ink-2);cursor:pointer;border:none;padding:0;background:none">'
+        html += '<div class="pack-item' + (item.packed ? ' packed' : '') + '" style="padding:8px 0;border-bottom:1px solid #E4E2DE">'
+          + '<input type="checkbox"' + (item.packed ? ' checked' : '') + ' data-dog="' + d.id + '" data-item="' + item.id + '" onchange="toggleDogItemPacked(this.dataset.dog,this.dataset.item,this.checked)" style="width:18px;height:18px;min-width:18px;accent-color:#6A6862;cursor:pointer;border:none;padding:0;background:none">'
           + '<div class="pack-item-name">' + esc(item.name) + '</div>'
-          + '<span style="font-size:11px;background:var(--surface-2);padding:2px 8px;border-radius:8px;color:var(--ink-2)">' + esc(item.category || 'Huisdier') + '</span>'
-          + '<button style="background:none;border:none;color:var(--ink-2);cursor:pointer;font-size:1rem;padding:4px 6px" data-dog="' + d.id + '" data-item="' + item.id + '" onclick="openEditDogItem(this.dataset.dog,this.dataset.item)" style="display:flex;align-items:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+          + '<span style="font-size:11px;background:#F2F1EF;padding:2px 8px;border-radius:8px;color:#6A6862">' + esc(item.category || 'Huisdier') + '</span>'
+          + '<button style="background:none;border:none;color:#6A6862;cursor:pointer;font-size:1rem;padding:4px 6px" data-dog="' + d.id + '" data-item="' + item.id + '" onclick="openEditDogItem(this.dataset.dog,this.dataset.item)" style="display:flex;align-items:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
           + '</div>';
       });
     }
@@ -2361,8 +2332,8 @@ function renderEssentialsPage() {
   var html = '';
   cats.forEach(function(cat) {
     var catItems = list.filter(function(e){ return (e.category||'Overig')===cat; });
-    html += '<div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1.5px solid var(--mist)">'
-      +'<span style="font-family:var(--serif);font-size:1rem;color:var(--ink);flex:1">'+esc(cat)+'</span>'
+    html += '<div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1.5px solid #F2F1EF">'
+      +'<span style="font-family:Georgia,serif;font-size:1rem;color:#1C1B18;flex:1">'+esc(cat)+'</span>'
       +'<button class="cat-add-btn" onclick="openLibraryItem(null,this.dataset.cat)" data-cat="'+esc(cat)+'" title="Item toevoegen in '+esc(cat)+'">'
       +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:13px;height:13px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'
       +'</button>'
@@ -2379,29 +2350,29 @@ function renderEssentialsPage() {
       var entries = g.entries;
       var first = entries[0];
       var trig = libTriggerLabel(first);
-      var trigBg = (!first.triggerType||first.triggerType==='always') ? 'var(--mist)' : 'var(--gold-pale)';
-      var trigCol = (!first.triggerType||first.triggerType==='always') ? 'var(--ink-2)' : 'var(--gold)';
+      var trigBg = (!first.triggerType||first.triggerType==='always') ? '#F2F1EF' : '#EBF0F2';
+      var trigCol = (!first.triggerType||first.triggerType==='always') ? '#6A6862' : '#4A6670';
       var whoTags = '';
       var hasGroup = entries.some(function(e){ return e.personId === 'group'; });
       if (hasGroup) {
-        whoTags = '<span style="background:var(--mist);color:var(--ink);padding:2px 8px;border:1px solid var(--line-2);font-size:11px;display:inline-flex;align-items:center;gap:3px;"><span style="width:11px;height:11px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M23 21v-2a4 4 0 00-3-3.87\"/><path d=\"M16 3.13a4 4 0 010 7.75\"/></svg></span>Groep</span>';
+        whoTags = '<span style="background:#F2F1EF;color:#1C1B18;padding:2px 8px;border:1px solid #CCCAC5;font-size:11px;display:inline-flex;align-items:center;gap:3px;"><span style="width:11px;height:11px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M23 21v-2a4 4 0 00-3-3.87\"/><path d=\"M16 3.13a4 4 0 010 7.75\"/></svg></span>Groep</span>';
       } else {
         entries.forEach(function(e) {
           var m = db.members.find(function(x){ return x.id===e.personId; });
           var d = (db.dogs||[]).find(function(x){ return x.id===e.personId; });
           var label = m ? m.name : (d ? d.name : '');
-          if (label) whoTags += '<span style="background:var(--mist);color:var(--ink);padding:2px 8px;border:1px solid var(--line-2);font-size:11px;">'+esc(label)+'</span>';
+          if (label) whoTags += '<span style="background:#F2F1EF;color:#1C1B18;padding:2px 8px;border:1px solid #CCCAC5;font-size:11px;">'+esc(label)+'</span>';
         });
       }
       var editIds = entries.map(function(e){ return e.id; }).join(',');
-      html += '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)">'
-        +'<div style="flex:1"><div style="font-size:14px;margin-bottom:5px;color:var(--ink)">'+esc(first.name)+'</div>'
+      html += '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #E4E2DE">'
+        +'<div style="flex:1"><div style="font-size:14px;margin-bottom:5px;color:#1C1B18">'+esc(first.name)+'</div>'
         +'<div style="display:flex;flex-wrap:wrap;gap:4px">'
         +whoTags
-        +(trig ? '<span style="background:'+trigBg+';color:'+trigCol+';padding:2px 8px;border:1px solid var(--line-2);font-size:11px;">'+trig+'</span>' : '')
+        +(trig ? '<span style="background:'+trigBg+';color:'+trigCol+';padding:2px 8px;border:1px solid #CCCAC5;font-size:11px;">'+trig+'</span>' : '')
         +'</div></div>'
-        +'<button style="background:none;border:none;color:var(--ink-2);cursor:pointer;padding:4px;display:flex;align-items:center;" data-id="'+first.id+'" onclick="openLibraryItem(this.dataset.id)" title="Bewerken"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"width:15px;height:15px\"><path d=\"M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7\"/><path d=\"M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z\"/></svg></button>'
-        +'<button style="background:none;border:none;color:var(--danger);cursor:pointer;padding:4px;display:flex;align-items:center;" data-ids="'+esc(editIds)+'" onclick="deleteLibGroup(this.dataset.ids)" title="Verwijderen"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" style=\"width:15px;height:15px\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"/><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"/></svg></button>'
+        +'<button style="background:none;border:none;color:#6A6862;cursor:pointer;padding:4px;display:flex;align-items:center;" data-id="'+first.id+'" onclick="openLibraryItem(this.dataset.id)" title="Bewerken"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"width:15px;height:15px\"><path d=\"M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7\"/><path d=\"M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z\"/></svg></button>'
+        +'<button style="background:none;border:none;color:#7A4040;cursor:pointer;padding:4px;display:flex;align-items:center;" data-ids="'+esc(editIds)+'" onclick="deleteLibGroup(this.dataset.ids)" title="Verwijderen"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" style=\"width:15px;height:15px\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"/><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"/></svg></button>'
         +'</div>';
     });
     html += '</div>';
@@ -2675,14 +2646,14 @@ function detectCol(header, candidates) {
 function showImportPreview(items) {
   const div = document.getElementById('import-preview-content');
   const cats = items.map(function(i){ return i.category; }).filter(function(v,i,a){ return a.indexOf(v)===i; });
-  div.innerHTML = '<div style="color:var(--ink-2);font-size:13px;margin-bottom:12px">'+items.length+' items gevonden in '+cats.length+' categorie(ën)</div>'
+  div.innerHTML = '<div style="color:#6A6862;font-size:13px;margin-bottom:12px">'+items.length+' items gevonden in '+cats.length+' categorie(ën)</div>'
     + cats.slice(0,5).map(function(cat){
       const ci = items.filter(function(i){ return i.category===cat; });
-      return '<div style="margin-bottom:10px"><div style="font-weight:600;font-size:13px;color:var(--ink)">'+esc(cat)+'</div>'
-        + ci.slice(0,3).map(function(i){ return '<div style="font-size:13px;color:var(--ink-2)">• '+esc(i.name)+(i.person?' ('+esc(i.person)+')':'')+'</div>'; }).join('')
-        + (ci.length>3?'<div style="font-size:12px;color:var(--ink-2)">+'+( ci.length-3)+' meer…</div>':'') + '</div>';
+      return '<div style="margin-bottom:10px"><div style="font-weight:600;font-size:13px;color:#1C1B18">'+esc(cat)+'</div>'
+        + ci.slice(0,3).map(function(i){ return '<div style="font-size:13px;color:#6A6862">• '+esc(i.name)+(i.person?' ('+esc(i.person)+')':'')+'</div>'; }).join('')
+        + (ci.length>3?'<div style="font-size:12px;color:#6A6862">+'+( ci.length-3)+' meer…</div>':'') + '</div>';
     }).join('')
-    + (cats.length>5?'<div style="font-size:13px;color:var(--ink-2)">En '+(cats.length-5)+' meer categorieën…</div>':'')
+    + (cats.length>5?'<div style="font-size:13px;color:#6A6862">En '+(cats.length-5)+' meer categorieën…</div>':'')
     + '<div style="margin-top:12px"><div class="form-label">Toevoegen aan reis</div><select id="import-trip-select"><option value="">-- Selecteer reis --</option>'
     + db.trips.map(function(t){ return '<option value="'+t.id+'">'+esc(t.destination)+'</option>'; }).join('') + '</select></div>';
   openModal('modal-import-preview');

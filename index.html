@@ -1332,11 +1332,6 @@ async function loadUserData() {
 
 function saveToStorage() {
   try { localStorage.setItem('pm_' + (currentUser?.id||'demo'), JSON.stringify({members:db.members, dogs:db.dogs, trips:db.trips, essentials:db.essentials, packItems:db.packItems, categories:db.categories, dogItems:db.dogItems})); } catch(e) {}
-  // Debounced Supabase sync (max 1x per 2s)
-  if (currentUser && currentUser.id !== 'demo' && sbUrl && sbKey) {
-    clearTimeout(saveToStorage._timer);
-    saveToStorage._timer = setTimeout(saveToSupabase, 2000);
-  }
 }
 
 function loadFromStorage() {
@@ -1754,13 +1749,13 @@ function itemHTML(item) {
     + '</div></div>';
 }
 
-function togglePacked(itemId, checked) {
+async function togglePacked(itemId, checked) {
   if (!activeTrip) return;
   const item = (db.packItems[activeTrip.id]||[]).find(function(i){ return i.id===itemId; });
-  if (item) { item.packed = checked; saveToStorage(); renderPackList(); syncItem(item); }
+  if (item) { item.packed = checked; saveToStorage(); renderPackList(); await syncItem(item); }
 }
 
-function toggleEssential(itemId) {
+async function toggleEssential(itemId) {
   if (!activeTrip) return;
   const item = (db.packItems[activeTrip.id]||[]).find(function(i){ return i.id===itemId; });
   if (!item) return;
@@ -1769,11 +1764,13 @@ function toggleEssential(itemId) {
     const isGroup = item.isGroup || !item.persons || item.persons.length === 0;
     const personId = isGroup ? 'group' : (item.persons.length===1 ? item.persons[0] : null);
     if (personId && !db.essentials.find(function(e){ return e.name===item.name && e.personId===personId; })) {
-      db.essentials.push({ id:'ess_'+Date.now(), name:item.name, personId:personId, category:item.category, triggerType:'always', triggerValues:[] });
+      var newEss = { id:'ess_'+Date.now(), name:item.name, personId:personId, category:item.category, triggerType:'always', triggerValues:[] };
+      db.essentials.push(newEss);
+      if (currentUser) await SB.upsert('essentials', { id:newEss.id, user_id:currentUser.id, name:newEss.name, person_id:newEss.personId, category:newEss.category||'Overig', trigger_type:'always', trigger_values:[] });
       toast('Essential bewaard'); renderEssentials();
     }
   }
-  saveToStorage(); renderPackList();
+  saveToStorage(); renderPackList(); await syncItem(item);
 }
 
 function setPackFilter(f, el) {
@@ -1973,8 +1970,11 @@ function updateItem() {
   saveToStorage(); renderPackList(); closeModal('modal-edit-item'); toast('Item bijgewerkt');
 }
 
-function deleteItem() {
+async function deleteItem() {
   const itemId = document.getElementById('edit-item-id').value;
+  if (currentUser && activeTrip) {
+    await SB.delete('pack_items', 'id=eq.' + itemId + '&user_id=eq.' + currentUser.id);
+  }
   db.packItems[activeTrip.id] = (db.packItems[activeTrip.id]||[]).filter(function(i){ return i.id!==itemId; });
   saveToStorage(); renderPackList(); closeModal('modal-edit-item'); toast('Item verwijderd');
 }

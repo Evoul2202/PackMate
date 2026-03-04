@@ -276,7 +276,7 @@ background:transparent;
 .category-count { font-size:11px; color:#6A6862; letter-spacing:0.04em; font-weight:400; }
 .category-body { border-bottom:1px solid #E4E2DE; overflow:hidden; }
 .category-body.collapsed { display:none; }
-.pack-item { display:flex; align-items:center; gap:12px; padding:13px 0; border-bottom:1px solid #E4E2DE; transition:background 0.12s; }
+.pack-item { display:flex; flex-direction:row; align-items:center; gap:10px; padding:13px 0; border-bottom:1px solid #E4E2DE; transition:background 0.12s; }
 .pack-item:last-child { border-bottom:none; }
 .pack-item.packed { opacity:1; }
 .pack-item input[type=“checkbox”] { width:17px; height:17px; min-width:17px; accent-color:#1C1B18; cursor:pointer; flex-shrink:0; }
@@ -292,8 +292,8 @@ background:transparent;
 /* FILTERS */
 .filter-bar { display:flex; gap:5px; overflow-x:auto; padding-bottom:4px; margin-bottom:12px; scrollbar-width:none; }
 .filter-bar::-webkit-scrollbar { display:none; }
-.person-filter-row { display:flex; gap:5px; overflow-x:auto; padding:4px 0; scrollbar-width:none; }
-.person-filter-row::-webkit-scrollbar { display:none; }
+.person-filter-row { display:flex; flex-wrap:wrap; gap:6px; padding:6px 0 8px; min-height:36px; }
+
 .person-chip {
 display:flex; align-items:center; gap:6px; padding:7px 14px;
 border:1px solid #CCCAC5; background:#FDFCFB; cursor:pointer;
@@ -1280,13 +1280,25 @@ async function loadUserData() {
       db.dogs = dr.data.map(function(d){ return { id:d.id, name:d.name, breed:d.breed||'' }; });
     }
     if (tr.data && tr.data.length > 0) {
-      db.trips = tr.data.map(function(t){ return { id:t.id, destination:t.destination, dateFrom:t.date_from||'', dateTo:t.date_to||'', type:t.type||'holiday', transport:t.transport||[], accommodation:t.accommodation||'', activities:t.activities||[], participants:t.participants||[], dog:!!t.dog, isTemplate:!!t.is_template }; });
+      db.trips = tr.data.map(function(t){
+        var rawPart = t.participants||[];
+        if (typeof rawPart === 'string') { try { rawPart = JSON.parse(rawPart); } catch(e) { rawPart = []; } }
+        rawPart = rawPart.map(function(p){ return String(p); });
+        var rawTrans = t.transport||[];
+        if (typeof rawTrans === 'string') { try { rawTrans = JSON.parse(rawTrans); } catch(e) { rawTrans = []; } }
+        var rawActs = t.activities||[];
+        if (typeof rawActs === 'string') { try { rawActs = JSON.parse(rawActs); } catch(e) { rawActs = []; } }
+        return { id:t.id, destination:t.destination, dateFrom:t.date_from||'', dateTo:t.date_to||'', type:t.type||'holiday', transport:rawTrans, accommodation:t.accommodation||'', activities:rawActs, participants:rawPart, dog:!!t.dog, isTemplate:!!t.is_template };
+      });
     }
     if (ir.data && ir.data.length > 0) {
       db.packItems = {};
       ir.data.forEach(function(item) {
         if (!db.packItems[item.trip_id]) db.packItems[item.trip_id] = [];
-        db.packItems[item.trip_id].push({ id:item.id, name:item.name, category:item.category||'Overig', persons:item.persons||[], isGroup:!!item.is_group, packed:!!item.packed, isEssential:!!item.is_essential, dogId:item.dog_id||null, dogName:item.dog_name||null });
+        var rawPersons = item.persons||[];
+        if (typeof rawPersons === 'string') { try { rawPersons = JSON.parse(rawPersons); } catch(e) { rawPersons = []; } }
+        rawPersons = rawPersons.map(function(p){ return String(p); });
+        db.packItems[item.trip_id].push({ id:item.id, name:item.name, category:item.category||'Overig', persons:rawPersons, isGroup:!!item.is_group, packed:!!item.packed, isEssential:!!item.is_essential, dogId:item.dog_id||null, dogName:item.dog_name||null });
       });
     }
     if (er.data && er.data.length > 0) {
@@ -1636,7 +1648,8 @@ function renderPackList() {
   if (packFilter === 'unpacked') items = items.filter(function(i){ return !i.packed; });
   if (activePersonFilter !== 'all') items = items.filter(function(i){
     if (i.isGroup || !i.persons || i.persons.length === 0) return true; // group items always visible
-    return i.persons.indexOf(activePersonFilter) !== -1;
+    var normalizedPersons = i.persons.map(function(p){ return String(p); });
+    return normalizedPersons.indexOf(String(activePersonFilter)) !== -1;
   });
   if (activeCategoryFilter !== 'all') items = items.filter(function(i){ return i.category===activeCategoryFilter; });
   if (activeActivityFilter !== 'all') items = items.filter(function(i){ return i.activity===activeActivityFilter; });
@@ -1665,28 +1678,36 @@ function renderPackList() {
 }
 
 function itemHTML(item) {
-  const isGroup = item.isGroup || !item.persons || item.persons.length === 0;
-  let personLabel;
+  var isGroup = item.isGroup || !item.persons || item.persons.length === 0;
+  // Build person tags (same style as library)
+  var personTag = '';
+  var tagStyle = 'background:#F2F1EF;color:#1C1B18;padding:2px 8px;border:1px solid #CCCAC5;font-size:11px;white-space:nowrap;display:inline-block';
   if (item.dogId) {
-    personLabel = '<div class="pack-item-person" style="background:#EBF0F2;color:#4A6670;display:inline-flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="5"/><path d="M7 10 C5 7 6 4 9 5" stroke-linecap="round"/><path d="M17 10 C19 7 18 4 15 5" stroke-linecap="round"/><circle cx="10.5" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="13.5" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="12" cy="14.5" r="0.6" fill="currentColor" stroke="none"/></svg></span>'+esc(item.dogName||'Hond')+'</div>';
+    personTag = '<span style="'+tagStyle+';color:#4A6670;background:#EBF0F2">'+esc(item.dogName||'Hond')+'</span>';
   } else if (isGroup) {
-    personLabel = '<div class="pack-item-person" style="background:#F2F1EF;color:#1C1B18"><span style="width:13px;height:13px;display:inline-flex;align-items:center;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span> Groep</div>';
+    personTag = '<span style="'+tagStyle+'">Groep</span>';
   } else {
-    const names = item.persons.map(function(pid){
-      const m = db.members.find(function(m){ return m.id===pid; });
+    var names = item.persons.map(function(pid){
+      var m = db.members.find(function(m){ return m.id===pid; });
       return m ? m.name : '';
-    }).filter(Boolean).join(', ');
-    personLabel = names ? '<div class="pack-item-person">'+esc(names)+'</div>' : '';
+    }).filter(Boolean);
+    personTag = names.map(function(n){
+      return '<span style="'+tagStyle+'">'+esc(n)+'</span>';
+    }).join('');
   }
-  return '<div class="pack-item'+(item.packed?' packed':'')+'" id="item-'+item.id+'">'
-    + '<input type="checkbox"'+(item.packed?' checked':'')+' onchange="togglePacked(\''+item.id+'\',this.checked)">'
-    + '<div class="pack-item-name">'+esc(item.name)
-    + (item.isEssential?'<span class="essential-badge" style="margin-left:6px">&#9733;</span>':'')
-    +'</div>'
-    + personLabel
-    + '<div class="pack-item-actions">'
-    + '<button onclick="openEditItem(\''+item.id+'\')" title="Bewerken" style="display:flex;align-items:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
-    + '<button class="essential-btn'+(item.isEssential?' is-essential':'')+'" onclick="toggleEssential(\''+item.id+'\')" title="Essential" style="display:flex;align-items:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>'
+  var nameColor = item.packed ? '#A8A5A0' : '#1C1B18';
+  var nameDecor = item.packed ? 'text-decoration:line-through;' : '';
+  var essColor = item.isEssential ? '#4A6670' : '#A8A5A0';
+  var iid = item.id;
+  return '<div id="item-'+iid+'" style="display:flex;flex-direction:row;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #E4E2DE">'
+    + '<input type="checkbox" style="width:17px;height:17px;min-width:17px;flex-shrink:0;accent-color:#1C1B18;cursor:pointer;margin-top:2px"'+(item.packed?' checked':'')+' onchange="togglePacked(\''+iid+'\',this.checked)">'
+    + '<div style="flex:1;min-width:0">'
+    +   '<div style="font-size:14px;color:'+nameColor+';'+nameDecor+'">'+esc(item.name)+(item.isEssential?'<span style="color:#4A6670;font-size:10px;margin-left:5px">★</span>':'')+'</div>'
+    +   (personTag ? '<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:5px">'+personTag+'</div>' : '')
+    + '</div>'
+    + '<div style="display:flex;gap:2px;flex-shrink:0;margin-top:1px">'
+    +   '<button onclick="openEditItem(\''+iid+'\')" title="Bewerken" style="background:none;border:none;color:#A8A5A0;cursor:pointer;padding:4px;display:flex;align-items:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+    +   '<button onclick="toggleEssential(\''+iid+'\')" title="Essentieel" style="background:none;border:none;color:'+essColor+';cursor:pointer;padding:4px;display:flex;align-items:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>'
     + '</div></div>';
 }
 
@@ -1719,7 +1740,7 @@ function setPackFilter(f, el) {
   renderPackList();
 }
 function setPersonFilter(id, el) {
-  activePersonFilter = id;
+  activePersonFilter = id === 'all' ? 'all' : String(id);
   document.querySelectorAll('.person-chip').forEach(function(c){ c.classList.remove('active'); });
   el.classList.add('active');
   renderPackList();

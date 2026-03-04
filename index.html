@@ -282,10 +282,10 @@ background:var(–surface); overflow:hidden; margin-bottom:12px;
 border:1px solid var(–line); cursor:pointer; transition:border-color 0.2s;
 }
 .trip-card:hover { border-color:var(–ink); }
-.trip-card-header { background:var(–ink); padding:20px; color:#FFFFFF; position:relative; }
+.trip-card-header { background:#1C1B18 !important; padding:20px; color:#FFFFFF !important; position:relative; }
 .trip-card-header::before { content:’’; position:absolute; top:0; left:0; right:0; height:2px; background:rgba(255,255,255,0.25); }
-.trip-dest { font-family:var(–serif); font-size:1.4rem; font-weight:400; letter-spacing:0.02em; color:#FFFFFF !important; }
-.trip-meta { font-size:11.5px; color:rgba(255,255,255,0.65); margin-top:6px; font-weight:300; letter-spacing:0.04em; }
+.trip-dest { font-family:var(–serif); font-size:1.4rem; font-weight:400; letter-spacing:0.02em; color:#FFFFFF !important; display:block; }
+.trip-meta { font-size:11.5px; color:rgba(255,255,255,0.65) !important; margin-top:6px; font-weight:300; letter-spacing:0.04em; display:block; }
 .trip-card-body { padding:14px 20px; }
 .trip-badges { display:flex; flex-wrap:wrap; gap:5px; }
 .badge { font-size:10.5px; padding:3px 9px; font-weight:400; background:var(–mist); color:var(–ink-2); letter-spacing:0.03em; }
@@ -1486,6 +1486,9 @@ function openTripById(id) {
 function openTrip(trip) {
   activeTrip = db.trips.find(function(t){ return t.id === trip.id; }) || trip;
   activeActivityFilter = 'all';
+  activePersonFilter = 'all';
+  activeCategoryFilter = 'all';
+  packFilter = 'all';
   renderTripHeader();
   renderPackList();
   showPage('pack');

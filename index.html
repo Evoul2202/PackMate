@@ -1327,13 +1327,35 @@ async function loadUserData() {
     }
     if (ir.data && ir.data.length > 0) {
       db.packItems = {};
+      var itemsToResplit = []; // items with multiple persons that need splitting in Supabase
       ir.data.forEach(function(item) {
         if (!db.packItems[item.trip_id]) db.packItems[item.trip_id] = [];
         var rawPersons = item.persons||[];
         if (typeof rawPersons === 'string') { try { rawPersons = JSON.parse(rawPersons); } catch(e) { rawPersons = []; } }
         rawPersons = rawPersons.map(function(p){ return String(p); });
-        db.packItems[item.trip_id].push({ id:item.id, name:item.name, category:item.category||'Overig', persons:rawPersons, isGroup:!!item.is_group, packed:!!item.packed, isEssential:!!item.is_essential, dogId:item.dog_id||null, dogName:item.dog_name||null });
+        if (!item.is_group && rawPersons.length > 1) {
+          // Split into one item per person
+          itemsToResplit.push(item.id);
+          rawPersons.forEach(function(pid, idx) {
+            var splitId = item.id + '_split_' + idx;
+            db.packItems[item.trip_id].push({ id:splitId, name:item.name, category:item.category||'Overig', persons:[pid], isGroup:false, packed:!!item.packed, isEssential:!!item.is_essential, dogId:item.dog_id||null, dogName:item.dog_name||null });
+          });
+        } else {
+          db.packItems[item.trip_id].push({ id:item.id, name:item.name, category:item.category||'Overig', persons:rawPersons, isGroup:!!item.is_group, packed:!!item.packed, isEssential:!!item.is_essential, dogId:item.dog_id||null, dogName:item.dog_name||null });
+        }
       });
+      // Sync split items back to Supabase (async, fire and forget)
+      if (currentUser && itemsToResplit.length > 0) {
+        var splitUid = currentUser.id;
+        itemsToResplit.forEach(function(oldId) {
+          SB.delete('pack_items', 'id=eq.' + oldId + '&user_id=eq.' + splitUid);
+          Object.keys(db.packItems).forEach(function(tid) {
+            db.packItems[tid].filter(function(i){ return i.id.startsWith(oldId+'_split_'); }).forEach(function(i) {
+              SB.upsert('pack_items', { id:i.id, user_id:splitUid, trip_id:tid, name:i.name, category:i.category||'Overig', persons:i.persons||[], is_group:false, packed:!!i.packed, is_essential:!!i.isEssential, dog_id:i.dogId||null, dog_name:i.dogName||null });
+            });
+          });
+        });
+      }
     }
     if (er.data && er.data.length > 0) {
       db.essentials = er.data.map(function(e){ return { id:e.id, name:e.name, personId:e.person_id||'group', category:e.category||'Overig', triggerType:e.trigger_type||'always', triggerValues:e.trigger_values||[] }; });
@@ -1515,7 +1537,7 @@ function openNewTrip() {
   openModal('modal-new-trip');
 }
 
-function saveTrip(asTemplate) {
+async function saveTrip(asTemplate) {
   const dest = document.getElementById('trip-dest').value.trim();
   if (!dest) { toast('Vul een bestemming in'); return; }
   const trip = {
@@ -1538,40 +1560,42 @@ function saveTrip(asTemplate) {
   renderTrips();
   closeModal('modal-new-trip');
   openTrip(trip); toast('Reis aangemaakt!');
+  // Sync trip + all generated pack items to Supabase
+  if (currentUser) {
+    var uid = currentUser.id;
+    await SB.upsert('trips', { id:trip.id, user_id:uid, destination:trip.destination, date_from:trip.dateFrom||null, date_to:trip.dateTo||null, type:trip.type||'holiday', transport:trip.transport||[], accommodation:trip.accommodation||'', activities:trip.activities||[], participants:trip.participants||[], dog:!!trip.dog, is_template:!!trip.isTemplate });
+    var packItems = db.packItems[trip.id] || [];
+    for (var i = 0; i < packItems.length; i++) {
+      var item = packItems[i];
+      await SB.upsert('pack_items', { id:item.id, user_id:uid, trip_id:trip.id, name:item.name, category:item.category||'Overig', persons:item.persons||[], is_group:!!item.isGroup, packed:false, is_essential:!!item.isEssential, dog_id:item.dogId||null, dog_name:item.dogName||null });
+    }
+  }
 }
 
 function addEssentialsToTrip(trip) {
-  var participants = trip.participants || [];
-  // Group essentials by name+category — merge multiple persons into one item
-  var grouped = {};
+  var participants = trip.participants.map(String) || [];
+  var items = db.packItems[trip.id];
+
   db.essentials.forEach(function(e) {
     if (!itemMatchesTrip(e, trip)) return;
-    var key = e.name + '||' + (e.category||'Overig');
-    if (!grouped[key]) grouped[key] = { essential: e, persons: [], isDog: false };
-    if (e.triggerType === 'dog') {
-      grouped[key].isDog = true;
-    } else if (e.personId === 'group') {
-      grouped[key].isGroup = true;
-    } else if (participants.map(String).indexOf(String(e.personId)) !== -1) {
-      grouped[key].persons.push(e.personId);
-    }
-  });
-  var items = db.packItems[trip.id];
-  Object.keys(grouped).forEach(function(key) {
-    var g = grouped[key];
-    var e = g.essential;
-    // Skip if item with same name already exists
-    if (items.find(function(i){ return i.name===e.name; })) return;
-    var uid = 'item_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
     var actTag = (e.triggerType === 'activity' && e.triggerValues && e.triggerValues.length) ? e.triggerValues[0] : null;
-    if (g.isDog) {
+
+    if (e.triggerType === 'dog') {
+      // Dog item — one per dog, skip if already exists
+      if (items.find(function(i){ return i.name===e.name && i.dogId===e.personId; })) return;
       var dog = db.dogs.find(function(d){ return d.id===e.personId; });
-      items.push({ id:uid, name:e.name, category:e.category||'Huisdier', persons:[], isGroup:false, dogId:e.personId, dogName:dog?dog.name:'Hond', packed:false, isEssential:true });
-    } else if (g.isGroup) {
-      items.push({ id:uid, name:e.name, category:e.category||'Overig', persons:[], isGroup:true, packed:false, isEssential:true, activity:actTag });
-    } else if (g.persons.length > 0) {
-      // Multiple persons → one item with all persons listed
-      items.push({ id:uid, name:e.name, category:e.category||'Overig', persons:g.persons, isGroup:false, packed:false, isEssential:true, activity:actTag });
+      items.push({ id:'item_'+Date.now()+'_'+Math.random().toString(36).substr(2,6), name:e.name, category:e.category||'Huisdier', persons:[], isGroup:false, dogId:e.personId, dogName:dog?dog.name:'Hond', packed:false, isEssential:true });
+
+    } else if (e.personId === 'group') {
+      // Group item — one shared item, skip if already exists
+      if (items.find(function(i){ return i.name===e.name && i.isGroup; })) return;
+      items.push({ id:'item_'+Date.now()+'_'+Math.random().toString(36).substr(2,6), name:e.name, category:e.category||'Overig', persons:[], isGroup:true, packed:false, isEssential:true, activity:actTag });
+
+    } else {
+      // Person item — one per person, skip if this person already has this item
+      if (participants.indexOf(String(e.personId)) === -1) return;
+      if (items.find(function(i){ return i.name===e.name && !i.isGroup && !i.dogId && i.persons && i.persons.map(String).indexOf(String(e.personId)) !== -1; })) return;
+      items.push({ id:'item_'+Date.now()+'_'+Math.random().toString(36).substr(2,6), name:e.name, category:e.category||'Overig', persons:[e.personId], isGroup:false, packed:false, isEssential:true, activity:actTag });
     }
   });
 }

@@ -921,7 +921,15 @@ const SB = {
     return this.req('GET', table + '?' + filter + '&select=*');
   },
   async upsert(table, row) {
-    return this.req('POST', table + '?on_conflict=id', row);
+    if (!sbUrl || !sbKey) return { data: null, error: 'No Supabase config' };
+    try {
+      const headers = this.getHeaders(currentUser?._token);
+      headers['Prefer'] = 'resolution=merge-duplicates,return=minimal';
+      const res = await fetch(sbUrl + '/rest/v1/' + table + '?on_conflict=id', {
+        method: 'POST', headers, body: JSON.stringify(row)
+      });
+      return res.ok ? { data: null, error: null } : { data: null, error: await res.json().catch(()=>res.status) };
+    } catch(e) { return { data: null, error: e.message }; }
   },
   async delete(table, filter) {
     if (!sbUrl || !sbKey) return { data: null, error: 'No Supabase config' };
@@ -1344,19 +1352,17 @@ async function loadUserData() {
           db.packItems[item.trip_id].push({ id:item.id, name:item.name, category:item.category||'Overig', persons:rawPersons, isGroup:!!item.is_group, packed:!!item.packed, isEssential:!!item.is_essential, dogId:item.dog_id||null, dogName:item.dog_name||null });
         }
       });
-      // Migrate split items to Supabase
+      // Migrate split items to Supabase — await before continuing
       if (currentUser && itemsToResync.length > 0) {
-        (async function() {
-          var uid = currentUser.id;
-          for (var i = 0; i < itemsToResync.length; i++) {
-            var entry = itemsToResync[i];
-            await SB.delete('pack_items', 'id=eq.' + entry.oldId + '&user_id=eq.' + uid);
-            for (var j = 0; j < entry.newItems.length; j++) {
-              var ni = entry.newItems[j];
-              await SB.upsert('pack_items', { id:ni.id, user_id:uid, trip_id:entry.tripId, name:ni.name, category:ni.category||'Overig', persons:ni.persons, is_group:false, packed:!!ni.packed, is_essential:!!ni.isEssential, dog_id:null, dog_name:null });
-            }
+        var uid2 = currentUser.id;
+        for (var ri = 0; ri < itemsToResync.length; ri++) {
+          var entry = itemsToResync[ri];
+          await SB.delete('pack_items', 'id=eq.' + entry.oldId + '&user_id=eq.' + uid2);
+          for (var rj = 0; rj < entry.newItems.length; rj++) {
+            var ni = entry.newItems[rj];
+            await SB.upsert('pack_items', { id:ni.id, user_id:uid2, trip_id:entry.tripId, name:ni.name, category:ni.category||'Overig', persons:ni.persons, is_group:false, packed:false, is_essential:!!ni.isEssential, dog_id:null, dog_name:null });
           }
-        })();
+        }
       }
     }
     if (er.data && er.data.length > 0) {

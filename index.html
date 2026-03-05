@@ -1327,34 +1327,36 @@ async function loadUserData() {
     }
     if (ir.data && ir.data.length > 0) {
       db.packItems = {};
-      var itemsToResplit = []; // items with multiple persons that need splitting in Supabase
+      var itemsToResync = []; // {oldId, tripId, newItems[]}
       ir.data.forEach(function(item) {
         if (!db.packItems[item.trip_id]) db.packItems[item.trip_id] = [];
         var rawPersons = item.persons||[];
         if (typeof rawPersons === 'string') { try { rawPersons = JSON.parse(rawPersons); } catch(e) { rawPersons = []; } }
         rawPersons = rawPersons.map(function(p){ return String(p); });
-        if (!item.is_group && rawPersons.length > 1) {
-          // Split into one item per person
-          itemsToResplit.push(item.id);
-          rawPersons.forEach(function(pid, idx) {
-            var splitId = item.id + '_split_' + idx;
-            db.packItems[item.trip_id].push({ id:splitId, name:item.name, category:item.category||'Overig', persons:[pid], isGroup:false, packed:!!item.packed, isEssential:!!item.is_essential, dogId:item.dog_id||null, dogName:item.dog_name||null });
+        if (!item.is_group && !item.dog_id && rawPersons.length > 1) {
+          // Split: one item per person
+          var newItems = rawPersons.map(function(pid, idx) {
+            return { id: item.id + '_p' + idx, name:item.name, category:item.category||'Overig', persons:[pid], isGroup:false, packed:!!item.packed, isEssential:!!item.is_essential, dogId:null, dogName:null };
           });
+          newItems.forEach(function(ni){ db.packItems[item.trip_id].push(ni); });
+          itemsToResync.push({ oldId: item.id, tripId: item.trip_id, newItems: newItems });
         } else {
           db.packItems[item.trip_id].push({ id:item.id, name:item.name, category:item.category||'Overig', persons:rawPersons, isGroup:!!item.is_group, packed:!!item.packed, isEssential:!!item.is_essential, dogId:item.dog_id||null, dogName:item.dog_name||null });
         }
       });
-      // Sync split items back to Supabase (async, fire and forget)
-      if (currentUser && itemsToResplit.length > 0) {
-        var splitUid = currentUser.id;
-        itemsToResplit.forEach(function(oldId) {
-          SB.delete('pack_items', 'id=eq.' + oldId + '&user_id=eq.' + splitUid);
-          Object.keys(db.packItems).forEach(function(tid) {
-            db.packItems[tid].filter(function(i){ return i.id.startsWith(oldId+'_split_'); }).forEach(function(i) {
-              SB.upsert('pack_items', { id:i.id, user_id:splitUid, trip_id:tid, name:i.name, category:i.category||'Overig', persons:i.persons||[], is_group:false, packed:!!i.packed, is_essential:!!i.isEssential, dog_id:i.dogId||null, dog_name:i.dogName||null });
-            });
-          });
-        });
+      // Migrate split items to Supabase
+      if (currentUser && itemsToResync.length > 0) {
+        (async function() {
+          var uid = currentUser.id;
+          for (var i = 0; i < itemsToResync.length; i++) {
+            var entry = itemsToResync[i];
+            await SB.delete('pack_items', 'id=eq.' + entry.oldId + '&user_id=eq.' + uid);
+            for (var j = 0; j < entry.newItems.length; j++) {
+              var ni = entry.newItems[j];
+              await SB.upsert('pack_items', { id:ni.id, user_id:uid, trip_id:entry.tripId, name:ni.name, category:ni.category||'Overig', persons:ni.persons, is_group:false, packed:!!ni.packed, is_essential:!!ni.isEssential, dog_id:null, dog_name:null });
+            }
+          }
+        })();
       }
     }
     if (er.data && er.data.length > 0) {

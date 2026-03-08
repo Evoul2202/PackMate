@@ -1396,15 +1396,17 @@ function loadFromStorage() {
 
 async function syncItem(item) {
   if (!sbUrl || !sbKey || !currentUser || !activeTrip) return;
-  try {
-    await SB.upsert('pack_items', {
-      id: item.id, user_id: currentUser.id, trip_id: activeTrip.id,
-      name: item.name, category: item.category, persons: item.persons||[],
-      is_group: item.isGroup||false, packed: item.packed,
-      is_essential: item.isEssential||false,
-      dog_id: item.dogId||null, dog_name: item.dogName||null
-    });
-  } catch(e) {}
+  const result = await SB.upsert('pack_items', {
+    id: item.id, user_id: currentUser.id, trip_id: activeTrip.id,
+    name: item.name, category: item.category||'Overig', persons: item.persons||[],
+    is_group: item.isGroup||false, packed: !!item.packed,
+    is_essential: item.isEssential||false,
+    dog_id: item.dogId||null, dog_name: item.dogName||null
+  });
+  if (result.error) {
+    console.error('syncItem failed:', result.error);
+    toast('⚠️ Sync mislukt: ' + JSON.stringify(result.error).substring(0, 80));
+  }
 }
 
 async function saveToSupabase() {

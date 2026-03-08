@@ -1142,7 +1142,8 @@ function clearAuthError(id) {
 }
 function friendlyAuthError(error) {
   var e = (error || '').toString().toLowerCase();
-  if (e.includes('invalid login') || e.includes('invalid credentials') || e.includes('email not confirmed')) return 'E-mailadres of wachtwoord is onjuist.';
+  if (e.includes('email not confirmed')) return '__EMAIL_NOT_CONFIRMED__';
+  if (e.includes('invalid login') || e.includes('invalid credentials')) return 'E-mailadres of wachtwoord is onjuist.';
   if (e.includes('user not found') || e.includes('no user')) return 'Er bestaat geen account met dit e-mailadres.';
   if (e.includes('email already') || e.includes('already registered')) return 'Dit e-mailadres is al in gebruik.';
   if (e.includes('password') && e.includes('short')) return 'Wachtwoord is te kort (minimaal 6 tekens).';
@@ -1156,11 +1157,34 @@ async function doLogin() {
   clearAuthError('login-error');
   if (!email || !pw) { showAuthError('login-error', 'Vul je e-mailadres en wachtwoord in.'); return; }
   const { data, error } = await SB.auth.signIn(email, pw);
-  if (error) { showAuthError('login-error', friendlyAuthError(error)); return; }
+  if (error) {
+    var msg = friendlyAuthError(error);
+    if (msg === '__EMAIL_NOT_CONFIRMED__') {
+      var el = document.getElementById('login-error');
+      el.innerHTML = '📧 Je e-mailadres is nog niet geverifieerd. Controleer je inbox en klik op de bevestigingslink.<br><a href="#" onclick="resendVerification(\'' + email.replace(/'/g,"") + '\')" style="color:#4A6670;font-weight:600;font-size:12px">Opnieuw versturen</a>';
+      el.style.display = 'block';
+    } else {
+      showAuthError('login-error', msg);
+    }
+    return;
+  }
   currentUser = data.user;
   try { localStorage.setItem('packmate_user', JSON.stringify(currentUser)); } catch(e) {}
   await loadUserData();
   showApp();
+}
+
+async function resendVerification(email) {
+  if (!sbUrl || !sbKey) return;
+  try {
+    await fetch(sbUrl + '/auth/v1/resend', {
+      method: 'POST',
+      headers: { 'apikey': sbKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'signup', email: email })
+    });
+  } catch(e) {}
+  var el = document.getElementById('login-error');
+  el.innerHTML = '📧 Verificatiemail opnieuw verstuurd naar <strong>' + email + '</strong>. Controleer ook je spammap.';
 }
 
 async function doRegister() {
@@ -1334,11 +1358,6 @@ async function loadUserData() {
       });
     }
     if (ir.data && ir.data.length > 0) {
-      // DEBUG: log packed values
-      var packedItems = ir.data.filter(function(i){ return i.packed; });
-      console.log('Supabase pack_items total:', ir.data.length, 'packed:', packedItems.length);
-      if (packedItems.length > 0) console.log('Packed items:', JSON.stringify(packedItems.map(function(i){ return {id:i.id,name:i.name,packed:i.packed}; })));
-      else toast('⚠️ DEBUG: geen ingepakte items gevonden in Supabase (' + ir.data.length + ' items totaal)');
       db.packItems = {};
       var itemsToResync = []; // {oldId, tripId, newItems[]}
       ir.data.forEach(function(item) {
@@ -1410,7 +1429,6 @@ async function syncItem(item) {
   });
   if (result.error) {
     console.error('syncItem failed:', result.error);
-    toast('⚠️ Sync mislukt: ' + JSON.stringify(result.error).substring(0, 80));
   }
 }
 
@@ -1779,7 +1797,6 @@ function renderPackList() {
 
 function itemHTML(item) {
   var isGroup = item.isGroup || !item.persons || item.persons.length === 0;
-  // Build person tags (same style as library)
   var personTag = '';
   var tagStyle = 'background:#F2F1EF;color:#1C1B18;padding:2px 8px;border:1px solid #CCCAC5;font-size:11px;white-space:nowrap;display:inline-block';
   if (item.dogId) {
@@ -1795,17 +1812,26 @@ function itemHTML(item) {
       return '<span style="'+tagStyle+'">'+esc(n)+'</span>';
     }).join('');
   }
-  var nameColor = item.packed ? '#A8A5A0' : '#1C1B18';
-  var nameDecor = item.packed ? 'text-decoration:line-through;' : '';
-  var essColor = item.isEssential ? '#4A6670' : '#A8A5A0';
+  var packed = item.packed;
+  var nameColor = packed ? '#A8A5A0' : '#1C1B18';
+  var nameDecor = packed ? 'text-decoration:line-through;' : '';
+  var essColor = item.isEssential ? '#4A6670' : '#C8C5C0';
   var iid = item.id;
-  return '<div id="item-'+iid+'" style="display:flex;flex-direction:row;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #E4E2DE">'
-    + '<input type="checkbox" style="width:17px;height:17px;min-width:17px;flex-shrink:0;accent-color:#1C1B18;cursor:pointer;margin-top:2px"'+(item.packed?' checked':'')+' onchange="togglePacked(\''+iid+'\',this.checked)">'
+
+  // Checkbox visuals
+  var boxBg = packed ? '#1C1B18' : '#FFFFFF';
+  var boxBorder = packed ? '#1C1B18' : '#CCCAC5';
+  var checkmark = packed
+    ? '<svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="2,7 6,11 12,3"/></svg>'
+    : '';
+
+  return '<div id="item-'+iid+'" onclick="togglePacked(\''+iid+'\','+(!packed)+')" style="display:flex;flex-direction:row;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #E4E2DE;cursor:pointer;-webkit-tap-highlight-color:rgba(0,0,0,0.04)">'
+    + '<div style="width:24px;height:24px;min-width:24px;border:2px solid '+boxBorder+';background:'+boxBg+';display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all 0.15s;border-radius:2px">'+checkmark+'</div>'
     + '<div style="flex:1;min-width:0">'
     +   '<div style="font-size:14px;color:'+nameColor+';'+nameDecor+'">'+esc(item.name)+(item.isEssential?'<span style="color:#4A6670;font-size:10px;margin-left:5px">★</span>':'')+'</div>'
     +   (personTag ? '<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:5px">'+personTag+'</div>' : '')
     + '</div>'
-    + '<div style="display:flex;gap:2px;flex-shrink:0;margin-top:1px">'
+    + '<div onclick="event.stopPropagation()" style="display:flex;gap:2px;flex-shrink:0;margin-top:1px">'
     +   '<button onclick="openEditItem(\''+iid+'\')" title="Bewerken" style="background:none;border:none;color:#A8A5A0;cursor:pointer;padding:4px;display:flex;align-items:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
     +   '<button onclick="toggleEssential(\''+iid+'\')" title="Essentieel" style="background:none;border:none;color:'+essColor+';cursor:pointer;padding:4px;display:flex;align-items:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>'
     + '</div></div>';

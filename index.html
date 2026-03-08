@@ -1334,6 +1334,11 @@ async function loadUserData() {
       });
     }
     if (ir.data && ir.data.length > 0) {
+      // DEBUG: log packed values
+      var packedItems = ir.data.filter(function(i){ return i.packed; });
+      console.log('Supabase pack_items total:', ir.data.length, 'packed:', packedItems.length);
+      if (packedItems.length > 0) console.log('Packed items:', JSON.stringify(packedItems.map(function(i){ return {id:i.id,name:i.name,packed:i.packed}; })));
+      else toast('⚠️ DEBUG: geen ingepakte items gevonden in Supabase (' + ir.data.length + ' items totaal)');
       db.packItems = {};
       var itemsToResync = []; // {oldId, tripId, newItems[]}
       ir.data.forEach(function(item) {
